@@ -4,6 +4,12 @@ struct OverviewView: View {
     @ObservedObject var runtime: Runtime
     @State private var confirmInventory = false
 
+    private func changeDescription(_ change: MetadataChange) -> String {
+        let before = change.before ?? change.objectID
+        let after = change.after ?? "missing"
+        return "\(change.kind): \(before) → \(after)"
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
             Text("Your Home, with a recovery history")
@@ -47,7 +53,7 @@ struct OverviewView: View {
                         Text("A changed inventory is being held. The previous snapshot remains protected.")
                         if let known = runtime.inventory {
                             ForEach(Array(SnapshotDiff.compare(known, pending).enumerated()), id: \.offset) { _, change in
-                                Text(change.kind + ": " + (change.before ?? change.objectID) + " → " + (change.after ?? "missing"))
+                                Text(changeDescription(change))
                                     .font(.callout).textSelection(.enabled)
                             }
                             Button("Review and Accept Inventory") { confirmInventory = true }
