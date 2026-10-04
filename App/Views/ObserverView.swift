@@ -84,7 +84,7 @@ struct ObserverView: View {
             }
             .navigationSplitViewColumnWidth(min: 220, ideal: textSize.isAccessibilitySize ? 440 : 260, max: 520)
             .listStyle(.sidebar)
-            .tint(ObserverStyle.solidButtonTint)
+            .tint(ObserverStyle.linkTint)
             .accessibilityIdentifier("observer.sidebar")
             .navigationTitle("Observer")
             .navigationBarTitleDisplayMode(.inline)

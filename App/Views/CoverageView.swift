@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct CoverageView: View {
     @ObservedObject var runtime: Runtime
@@ -64,9 +65,18 @@ struct CoverageView: View {
                                         .font(.headline)
                                     Text(entry.category).font(.subheadline).foregroundStyle(ObserverStyle.secondaryText)
                                     Text(entry.gap.reason).fixedSize(horizontal: false, vertical: true)
-                                    LabeledContent("HomeKit ID", value: entry.gap.objectID)
-                                        .font(.caption.monospaced())
-                                        .textSelection(.enabled)
+                                    Text("HomeKit ID").font(.caption).foregroundStyle(ObserverStyle.secondaryText)
+                                    Button {
+                                        UIPasteboard.general.string = entry.gap.objectID
+                                    } label: {
+                                        Label(entry.gap.objectID, systemImage: "doc.on.doc")
+                                            .font(.caption.monospaced())
+                                            .frame(minHeight: 44, alignment: .leading)
+                                    }
+                                    .buttonStyle(.borderless)
+                                    .accessibilityLabel("Copy HomeKit identifier for \(entry.name)")
+                                    .accessibilityValue(entry.gap.objectID)
+                                    .accessibilityHint("Copies this identifier to the clipboard")
                                 }
                                 .frame(maxWidth: .infinity, alignment: .leading).padding(8)
                             }
