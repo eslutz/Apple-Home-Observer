@@ -15,3 +15,31 @@ jobs:
         run: swift test
       - name: Ciphertext packaging tests
         run: python3 -m unittest discover -s Tests -p 'test_*.py'
+
+  accessibility:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install project generator
+        run: brew install xcodegen
+      - name: Create isolated iPad simulator
+        run: |
+          python3 - <<'PYCODE'
+          import json, subprocess, os
+          runtimes=json.loads(subprocess.check_output(['xcrun','simctl','list','runtimes','-j']))['runtimes']
+          runtime=next(r for r in reversed(runtimes) if r.get('isAvailable') and r['identifier'].startswith('com.apple.CoreSimulator.SimRuntime.iOS-'))
+          types=json.loads(subprocess.check_output(['xcrun','simctl','list','devicetypes','-j']))['devicetypes']
+          device=next(t for t in reversed(types) if t['name'].startswith('iPad Pro'))
+          identifier=subprocess.check_output(['xcrun','simctl','create','Observer Audit',device['identifier'],runtime['identifier']],text=True).strip()
+          with open(os.environ['GITHUB_ENV'],'a') as output: output.write('OBSERVER_AUDIT_DEVICE='+identifier+'\n')
+          PYCODE
+      - name: Synthetic accessibility matrix
+        run: ./script/accessibility-audit.sh
+      - name: Save synthetic test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-accessibility-results
+          path: build/accessibility-*.xcresult
+          retention-days: 7

@@ -47,7 +47,9 @@ struct MonitoringView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Review observer health, backup freshness, configuration drift, reachability, and recent investigation events in Monitoring Services.")
                         .foregroundStyle(ObserverStyle.secondaryText)
-                    TextField("Dashboard URL (optional, HTTPS)", text: $dashboardAddress)
+                    Text("Dashboard URL (optional)").font(.headline)
+                    TextField("", text: $dashboardAddress)
+                        .accessibilityLabel("Dashboard URL")
                         .textFieldStyle(.roundedBorder)
                         .autocorrectionDisabled()
                     if let dashboardURL {

@@ -66,6 +66,7 @@ if [[ -e "$agent" ]]; then /bin/cp -p "$agent" "$rollback/${bundle_id}.plist"; h
 /usr/bin/printf '%s\n' "$had_agent" > "$rollback/previous_agent"
 restore_previous() {
     /bin/launchctl bootout "gui/$uid/${bundle_id}" >/dev/null 2>&1 || true
+    /usr/bin/pkill -TERM -x AppleHomeObserver >/dev/null 2>&1 || true
     /bin/rm -rf "$app"
     if (( had_app )); then /usr/bin/ditto "$rollback/AppleHomeObserver.app" "$app"; fi
     if (( had_agent )); then /bin/cp -p "$rollback/${bundle_id}.plist" "$agent"; else /bin/rm -f "$agent"; fi
@@ -84,6 +85,11 @@ PY
 /bin/chmod 600 "$agent_dir/.AppleHomeObserver-${token}.plist"
 if ! /bin/mv "$agent_dir/.AppleHomeObserver-${token}.plist" "$agent"; then restore_previous; exit 1; fi
 if ! /bin/launchctl bootstrap "gui/$uid" "$agent"; then restore_previous; exit 1; fi
+latest_root="$(/usr/bin/dirname "$rollback")"
+latest_stage="$latest_root/.latest-${token}"
+if ! (umask 077; /usr/bin/printf '%s\n' "$token" > "$latest_stage") || ! /bin/mv "$latest_stage" "$latest_root/latest"; then
+    restore_previous; exit 1
+fi
 /bin/rm -rf "$stage"
 /bin/rm -f "$archive"
 /usr/bin/open "$app"

@@ -19,7 +19,7 @@ struct BackupsView: View {
     }
 
     var body: some View {
-        LazyVStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 24) {
             Text("Encrypted backups").font(.largeTitle.bold())
                 .accessibilityAddTraits(.isHeader)
             Text("The initial baseline, 30 daily snapshots, and 100 change or manual snapshots are retained. Snapshots needed by unresolved recovery journals are protected.")
@@ -34,28 +34,29 @@ struct BackupsView: View {
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(8)
             }
             if runtime.archives.isEmpty {
-                ContentUnavailableView("No snapshots yet", systemImage: "externaldrive", description: Text("A baseline is saved after two matching complete inventories. You can then make a manual backup from the toolbar."))
+                ObserverEmptyState("No snapshots yet", description: Text("A baseline is saved after two matching complete inventories. You can then make a manual backup from the toolbar."))
             } else {
-                TextField("Search snapshots", text: $search)
+                Text("Search snapshots").font(.headline)
+                TextField("", text: $search)
                     .textFieldStyle(.roundedBorder)
                     .accessibilityLabel("Search snapshots")
+                    .accessibilityIdentifier("observer.snapshot.search")
                 if filteredArchives.isEmpty {
-                    ContentUnavailableView("No matching snapshots", systemImage: "magnifyingglass", description: Text("Try a different date, backup type, or file name."))
+                    ObserverEmptyState("No matching snapshots", description: Text("Try a different date, backup type, or file name."))
                 } else {
                     Text("\(filteredArchives.count) of \(runtime.archives.count) snapshots")
                         .font(.callout).foregroundStyle(ObserverStyle.secondaryText)
-                    LazyVStack(alignment: .leading, spacing: 14) {
+                    VStack(alignment: .leading, spacing: 14) {
                 ForEach(filteredArchives, id: \.file) { item in
                     GroupBox {
                         VStack(alignment: .leading, spacing: 12) {
-                            HStack(alignment: .firstTextBaseline) {
+                            AdaptiveActionStack(minimumHorizontalWidth: 480) {
                                 Text(item.date.formatted(date: .abbreviated, time: .shortened)).font(.headline)
-                                Spacer()
                                 Text(item.reason.rawValue.capitalized).font(.subheadline).foregroundStyle(ObserverStyle.secondaryText)
                             }
                             AdaptiveActionStack(minimumHorizontalWidth: 320) {
-                                Button("Preview Restore") { preview(item) }
-                                Button("Export Snapshot") { export(item) }
+                                Button("Preview Restore") { preview(item) }.accessibilityValue(item.date.formatted(date: .abbreviated, time: .shortened) + ", " + item.reason.rawValue)
+                                Button("Export Snapshot") { export(item) }.accessibilityValue(item.date.formatted(date: .abbreviated, time: .shortened) + ", " + item.reason.rawValue)
                             }
                         }.frame(maxWidth: .infinity, alignment: .leading).padding(8)
                     }

@@ -28,8 +28,10 @@ private enum ObserverSection: String, CaseIterable, Identifiable {
 
 struct ObserverView: View {
     @ObservedObject var runtime: Runtime
+    @Environment(\.dynamicTypeSize) private var textSize
     @ObservedObject private var adapter: HomeAdapter
     @SceneStorage("observer.section") private var section = ObserverSection.overview.rawValue
+    @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var exportDocument: PrivateDocument?
     @State private var exporting = false
     @State private var exportName = "AppleHome.archive"
@@ -43,22 +45,28 @@ struct ObserverView: View {
     }
 
     var body: some View {
-        NavigationSplitView {
-            List(selection: Binding<String?>(get: { section }, set: { if let value = $0 { section = value } })) {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
+            List(selection: Binding<String?>(get: { section }, set: { if let value = $0 { section = value; if textSize.isAccessibilitySize { columnVisibility = .detailOnly } } })) {
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Home").font(.caption).foregroundStyle(ObserverStyle.secondaryText)
-                        Picker("Home", selection: $runtime.selectedID) {
-                            Text("Choose a Home").tag("")
-                            ForEach(runtime.homeChoices) {
-                                Text($0.name).tag($0.id)
+                        Menu {
+                            Button("Choose a Home") { runtime.selectedID = "" }
+                            ForEach(runtime.homeChoices) { home in
+                                Button(home.name) { runtime.selectedID = home.id }
+                            }
+                        } label: {
+                            HStack(alignment: .firstTextBaseline) {
+                                Text(runtime.homeChoices.first(where: { $0.id == runtime.selectedID })?.name ?? "Choose a Home")
+                                    .lineLimit(nil).fixedSize(horizontal: false, vertical: true)
+                                Image(systemName: "chevron.up.chevron.down").accessibilityHidden(true)
                             }
                         }
-                        .labelsHidden()
-                        .pickerStyle(.menu)
                         .disabled(runtime.busy)
+                        .foregroundStyle(.primary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .accessibilityLabel("Home")
+                        .accessibilityValue(runtime.homeChoices.first(where: { $0.id == runtime.selectedID })?.name ?? "Choose a Home")
                         .accessibilityIdentifier("observer.home")
                     }
                 }
@@ -68,21 +76,18 @@ struct ObserverView: View {
                             Image(systemName: item.icon).accessibilityHidden(true)
                             Text(item.title).lineLimit(nil).fixedSize(horizontal: false, vertical: true)
                         }
-                            .foregroundStyle(.primary)
                             .accessibilityElement(children: .combine)
                             .accessibilityIdentifier("observer.section." + item.rawValue)
                             .tag(item.rawValue)
                     }
-                } header: {
-                    Text("Library").foregroundStyle(ObserverStyle.secondaryText)
                 }
             }
+            .navigationSplitViewColumnWidth(min: 220, ideal: textSize.isAccessibilitySize ? 440 : 260, max: 520)
             .listStyle(.sidebar)
             .tint(ObserverStyle.solidButtonTint)
             .accessibilityIdentifier("observer.sidebar")
             .navigationTitle("Observer")
             .navigationBarTitleDisplayMode(.inline)
-            .navigationSplitViewColumnWidth(min: 230, ideal: 250, max: 300)
         } detail: {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
@@ -111,6 +116,14 @@ struct ObserverView: View {
             .navigationTitle((ObserverSection(rawValue: section) ?? .overview).title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                if textSize.isAccessibilitySize || columnVisibility == .detailOnly {
+                    ToolbarItem(placement: .navigation) {
+                        Button {
+                            columnVisibility = columnVisibility == .detailOnly ? .all : .detailOnly
+                        } label: { Label("Navigation", systemImage: "sidebar.left") }
+                        .accessibilityIdentifier("observer.navigation.toggle")
+                    }
+                }
                 ToolbarItem(id: "refresh", placement: .primaryAction) {
                     Button {
                         runtime.reconcile(); adapter.readPositions()
@@ -118,14 +131,18 @@ struct ObserverView: View {
                     .help("Refresh the selected Home’s inventory (Command-R)")
                     .disabled(runtime.busy)
                 }
+                if runtime.inventory != nil && !runtime.busy && runtime.health.inventoryReady {
                 ToolbarItem(id: "backup", placement: .primaryAction) {
                     Button { runtime.backup(.manual) } label: {
                         Label("Back Up Now", systemImage: "externaldrive.badge.plus")
                     }
                     .help("Save an encrypted snapshot (Shift-Command-B)")
-                    .disabled(runtime.inventory == nil || runtime.busy || !runtime.health.inventoryReady)
+                }
                 }
             }
+        }
+        .onChange(of: textSize) { _, size in
+            columnVisibility = size.isAccessibilitySize ? .detailOnly : .all
         }
         .tint(ObserverStyle.linkTint)
         .frame(minWidth: 680, idealWidth: 980, minHeight: 520, idealHeight: 720)
@@ -155,6 +172,10 @@ struct ObserverView: View {
     }
 
     private func exportArchive(_ item: SnapshotIndex) {
+        if Runtime.auditMode != nil {
+            exportDocument = .init(data: Data("Synthetic acceptance export".utf8))
+            exportName = "sample-snapshot.txt"; exporting = true; return
+        }
         do {
             guard let store = runtime.store else { return }
             exportDocument = .init(data: try PrivateFiles.read(store.root.appendingPathComponent(item.file), maximum: ArchiveCodec.maximumBytes))

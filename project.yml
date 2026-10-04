@@ -37,6 +37,37 @@ targets:
         ENABLE_APP_SANDBOX: YES
         INFOPLIST_KEY_ObserverMonitoringFolder: $(OBSERVER_MONITORING_FOLDER)
 
+  AcceptanceApp:
+    type: application
+    configFiles:
+      Debug: Config/Defaults.xcconfig
+      Release: Config/Defaults.xcconfig
+    platform: iOS
+    sources:
+      - App
+      - Sources/ObserverCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.example.AppleHomeObserver.Acceptance
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppleHomeObserver
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSHomeKitUsageDescription: 'Back up Home configuration and observe metadata and blind command outcomes. Restores require an explicit preview and Apply.'
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        CODE_SIGN_ENTITLEMENTS: App/Acceptance.entitlements
+        TARGETED_DEVICE_FAMILY: '2'
+        'TARGETED_DEVICE_FAMILY[sdk=macosx*]': '6'
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+        INFOPLIST_KEY_CFBundleDisplayName: 'Observer Acceptance'
+        ENABLE_APP_SANDBOX: YES
+        DEVELOPMENT_TEAM: ''
+        CODE_SIGN_IDENTITY: '-'
+        CODE_SIGN_STYLE: Automatic
+        PROVISIONING_PROFILE_SPECIFIER: ''
+        SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) OBSERVER_ACCEPTANCE
+        INFOPLIST_KEY_ObserverMonitoringFolder: $(OBSERVER_MONITORING_FOLDER)
+
   AccessibilityUITests:
     type: bundle.ui-testing
     configFiles:
@@ -53,7 +84,27 @@ targets:
         CODE_SIGN_STYLE: Automatic
         PROVISIONING_PROFILE_SPECIFIER: ''
         TEST_TARGET_NAME: AppleHomeObserver
+  NativeAcceptanceTests:
+    type: bundle.ui-testing
+    platform: macOS
+    sources: [NativeUITests]
+    dependencies:
+      - target: AcceptanceApp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: org.example.AppleHomeObserver.NativeTests
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_IDENTITY: '-'
+        CODE_SIGN_STYLE: Automatic
+        TEST_TARGET_NAME: AcceptanceApp
 schemes:
+  NativeAcceptance:
+    build:
+      targets:
+        AcceptanceApp: all
+        NativeAcceptanceTests: [test]
+    test:
+      targets: [NativeAcceptanceTests]
   AppleHomeObserver:
     build:
       targets:

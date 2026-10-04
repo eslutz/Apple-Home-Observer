@@ -40,13 +40,13 @@ struct BlindInvestigationView: View {
             Text("Mark a test here, then issue the same command in Apple Home or with the remote. This app reads HomeKit-reported position; you confirm whether the blind physically moves.")
                 .foregroundStyle(ObserverStyle.secondaryText)
             if blinds.isEmpty {
-                ContentUnavailableView("No blinds in the inventory", systemImage: "blinds.horizontal.closed", description: Text("Choose a Home and wait for a complete inventory before recording a test."))
+                ObserverEmptyState("No blinds in the inventory", description: Text("Choose a Home and wait for a complete inventory before recording a test."))
             } else {
                 TextField("Find a blind", text: $search)
                     .textFieldStyle(.roundedBorder)
                     .accessibilityLabel("Filter blinds")
                 if filteredBlinds.isEmpty {
-                    ContentUnavailableView("No matching blinds", systemImage: "magnifyingglass", description: Text("Try another name, room, or model."))
+                    ObserverEmptyState("No matching blinds", description: Text("Try another name, room, or model."))
                 }
                 GroupBox("Reproduction marker") {
                     VStack(alignment: .leading, spacing: 20) {

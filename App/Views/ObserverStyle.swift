@@ -29,8 +29,22 @@ struct AdaptiveActionStack<Content: View>: View {
         layout { content }
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(GeometryReader { geometry in
-                Color.clear.preference(key: ActionWidthPreference.self, value: geometry.size.width)
+                Color.clear.preference(key: ActionWidthPreference.self, value: geometry.size.width).accessibilityHidden(true)
             })
             .onPreferenceChange(ActionWidthPreference.self) { width = $0 }
+    }
+}
+
+struct ObserverEmptyState: View {
+    let title: String
+    let description: Text
+    init(_ title: String, description: Text) {
+        self.title = title; self.description = description
+    }
+    var body: some View {
+        VStack(spacing: 12) {
+            Text(title).font(.title2.bold()).accessibilityAddTraits(.isHeader)
+            description.fixedSize(horizontal: false, vertical: true).foregroundStyle(ObserverStyle.secondaryText).multilineTextAlignment(.center)
+        }.frame(maxWidth: .infinity).padding(.vertical, 28)
     }
 }

@@ -45,7 +45,9 @@ enum BlindCommandOutcome: Equatable {
 }
 @MainActor final class Runtime: ObservableObject {
     static var auditMode: String? {
-        #if DEBUG
+        #if OBSERVER_ACCEPTANCE
+        return ProcessInfo.processInfo.environment["OBSERVER_UI_AUDIT"] ?? "populated"
+        #elseif DEBUG
         return ProcessInfo.processInfo.environment["OBSERVER_UI_AUDIT"]
         #else
         return nil
@@ -53,7 +55,7 @@ enum BlindCommandOutcome: Equatable {
     }
     let adapter = HomeAdapter(observe: Runtime.auditMode == nil)
     var homeChoices: [NamedObject] {
-        if Self.auditMode == "populated", let inventory { return [NamedObject(id: selectedID, name: inventory.name)] }
+        if Self.auditMode != nil, let inventory { return [NamedObject(id: selectedID, name: inventory.name)] }
         return adapter.homes.map { NamedObject(id: $0.uniqueIdentifier.uuidString, name: $0.name) }
     }
     @Published var status = "Waiting for Home Data permission"
@@ -105,13 +107,29 @@ enum BlindCommandOutcome: Equatable {
             selectedID = ""; recoveryExported = false; monitoringExportConfigured = false
             key = SymmetricKey(size: .bits256)
             status = "Choose a Home to observe"
-            if mode == "populated" {
+            if mode != "empty" {
                 selectedID = "00000000-0000-0000-0000-000000000001"
-                inventory = HomeSnapshot(homeID: selectedID, name: "Sample Home", rooms: [NamedObject(id: "audit-room", name: "Living Room")], accessories: [AccessoryRecord(id: "audit-blind", name: "Living Room Blind", roomID: "audit-room", manufacturer: "Sample", model: "Blind", services: [ServiceRecord(id: "audit-service", name: "Blind", type: "sample", characteristics: [CharacteristicRecord(id: "audit-position", type: HMCharacteristicTypeCurrentPosition, readable: true)])])], coverage: [CoverageGap(objectID: "audit-home", reason: "Pairing secrets and hub settings require separate recovery.")])
+                inventory = HomeSnapshot(homeID: selectedID, name: "Sample Home", rooms: [NamedObject(id: "audit-room", name: "Living Room")], accessories: [AccessoryRecord(id: "audit-blind", name: "Living Room Blind", roomID: "audit-room", manufacturer: "Sample", model: "Blind", services: [ServiceRecord(id: "audit-service", name: "Blind", type: "sample", characteristics: [CharacteristicRecord(id: "audit-position", type: HMCharacteristicTypeCurrentPosition, readable: true)])])], coverage: [CoverageGap(objectID: selectedID, reason: "Pairing secrets and hub settings require separate recovery.")])
                 health.inventoryReady = true; health.authorized = true; health.accessoryCount = 1; health.coverageGaps = 1
                 blindReadings["audit-blind"] = BlindPositionReading(current: 45, target: 45, updatedAt: Date())
                 archives = [SnapshotIndex(file: "audit-snapshot.aho", date: Date(timeIntervalSince1970: 1791000000), reason: .baseline, digest: "synthetic")]
+                health.lastBackup = archives.first?.date; health.lastReconcile = Date()
                 status = "Observing sample inventory for accessibility testing"
+                if mode == "many-backups" {
+                    archives = (0..<130).map { SnapshotIndex(file: "sample-\($0).aho", date: Date(timeIntervalSince1970: 1791000000 + Double($0 * 86400)), reason: .daily, digest: "synthetic") }
+                }
+                if mode == "busy" { busy = true }
+                if mode == "incomplete" { health.inventoryReady = false; status = "Sample inventory is incomplete" }
+                if mode == "error" { health.error = "sample_error"; status = "Sample refresh failed. Try again." }
+                if mode == "recovery" || mode == "interrupted" {
+                    var saved = inventory!; saved.name = "Sample restored Home"
+                    savedForRestore = saved; preview = try? RestorePlanner.preview(saved: saved, current: inventory!)
+                    if mode == "interrupted", let preview {
+                        var journal = RestoreJournal(predecessorFile: "sample-predecessor.aho", preview: preview)
+                        journal.id = "sample-journal"; journal.state = "interrupted"
+                        recoveryJournals = [journal]
+                    }
+                }
             }
             return
         }
@@ -136,6 +154,7 @@ enum BlindCommandOutcome: Equatable {
         tick()
     }
     func configureStore() {
+        guard Self.auditMode == nil else { return }
         store = nil; archives = []; preview = nil; recoveryJournalID = nil; inventoryGate = InventoryGate(); pendingInventory = nil; health.inventoryReady = false; health.lastBackup = nil; health.lastDaily = nil; health.lastReconcile = nil
         guard let uuid = UUID(uuidString:selectedID), let key else { return }
         do {
@@ -152,6 +171,7 @@ enum BlindCommandOutcome: Equatable {
         writeHealth()
     }
     func reconcile(approveRemoval: Bool = false) {
+        guard Self.auditMode == nil else { status = "Sample inventory refreshed"; return }
         guard !busy else { return }
         health.authorized = adapter.authorized
         health.homeCount = adapter.homes.count
@@ -209,6 +229,7 @@ enum BlindCommandOutcome: Equatable {
         writeHealth()
     }
     func backup(_ reason: SnapshotReason) {
+        guard Self.auditMode == nil else { status = "Sample backup action verified"; return }
         guard !busy, let previous = inventory, let store, adapter.authorized, health.inventoryReady else { return }
         do {
             var snapshot = try adapter.snapshot()
@@ -343,6 +364,7 @@ enum BlindCommandOutcome: Equatable {
         try FileHandle(fileDescriptor: fd, closeOnDealloc: false).write(contentsOf: line)
     }
     func event(_ name: String, attributes: [String:Any], severity: String = "INFO") {
+        guard Self.auditMode == nil else { return }
         let value: [String:Any] = ["schema":"home-network-otel-json","schema_version":1,"timestamp":ISO8601DateFormatter().string(from:Date()),"severity_text":severity,"severity_number":severity == "ERROR" ? 17 : 9,"body":name,"event_name":name,"resource":["service.name":"apple-home-observer","service.instance.id":ObserverConfiguration.bundleIdentifier,"host.name":ProcessInfo.processInfo.hostName,"deployment.environment.name":"local"],"attributes":attributes]
         do {
             let line = try JSONSerialization.data(withJSONObject: value, options: [.sortedKeys]) + Data([10])
@@ -365,6 +387,7 @@ enum BlindCommandOutcome: Equatable {
         writeHealth()
     }
     func writeHealth() {
+        guard Self.auditMode == nil else { return }
         health.timestamp = Date()
         UserDefaults.standard.set(health.driftTotal, forKey: "driftTotal")
         UserDefaults.standard.set(health.unplannedDriftTotal, forKey: "unplannedDriftTotal")
@@ -403,6 +426,7 @@ enum BlindCommandOutcome: Equatable {
         return choices
     }
     func importArchive(_ url: URL) {
+        guard Self.auditMode == nil else { status = "Sample snapshot import verified"; return }
         recoveryJournalID = nil
         do {
             importedArchive = try PrivateFiles.read(url,maximum:ArchiveCodec.maximumBytes)
@@ -411,6 +435,7 @@ enum BlindCommandOutcome: Equatable {
         } catch { status = "Archive could not be authenticated. Import its private recovery key if this is from another installation."; preview = nil }
     }
     func importRecovery(_ url: URL) {
+        guard Self.auditMode == nil else { status = "Sample recovery-key import verified"; return }
         do {
             let data = try PrivateFiles.read(url,maximum:128)
             importRecoveryKey = try RecoveryKeyCodec.decode(data)
@@ -422,6 +447,7 @@ enum BlindCommandOutcome: Equatable {
         catch { status = "Preview refused: \(String(describing:error))"; preview = nil }
     }
     func makePreview(_ item: SnapshotIndex) {
+        if Self.auditMode != nil, let inventory { var saved = inventory; saved.name = "Sample restored Home"; savedForRestore = saved; preview = try? RestorePlanner.preview(saved: saved, current: inventory); return }
         do { guard let store else { throw ObserverError.invalidArchive }; let saved = try store.load(item); let current = try adapter.snapshot(); recoveryJournalID = nil; restoreMappings = [:]; savedForRestore = saved; preview = try RestorePlanner.preview(saved:saved,current:current) }
         catch { status = "Preview failed: \(String(describing:error))"; preview = nil }
     }

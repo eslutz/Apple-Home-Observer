@@ -27,3 +27,19 @@ Preserve accessory identity and timestamps before unpairing or resetting. Compar
 ## Accessibility
 
 Isolated simulator audits use synthetic data, without HomeKit, Keychain, archive stores or desktop appearance changes. They cover shared SwiftUI controls; native Catalyst windows/toolbars and spoken VoiceOver behavior require separate acceptance. Known audit findings must be fixed or documented before release.
+
+## Repeatable native acceptance
+
+Install full Xcode and XcodeGen on the designated test Mac, complete Xcode's license/additional-component setup, and use its logged-in graphical session. Set DEVELOPER_DIR explicitly if needed. Run `OBSERVER_NATIVE_TEST_HOST=1 ./script/native-acceptance.sh`. This builds a separate ad-hoc signed `AcceptanceApp` without HomeKit entitlement. The preparation script consistently ad-hoc signs the isolated test runner and disables library validation only for that runner so it can load the locally built test bundle. macOS may require an explicit UI automation grant; a timeout enabling automation is a host setup failure, not a completed UI test. Its compilation flag forces synthetic mode even when no launch environment is supplied. Refresh, backup and restore operations are simulated; production observation and archive/key stores are not started.
+
+The suite checks native screen accessibility, menu shortcuts, an in-app appearance transition, resizing/search and guarded recovery states. The appearance transition is app-local; a real system appearance transition still needs separate acceptance on the designated Mac. Result bundles stay in ignored build storage. Do not publish household screenshots or attach a public self-hosted runner to a household Mac.
+
+For spoken VoiceOver acceptance, record the designated Mac's original VoiceOver, appearance and keyboard-navigation settings first. Review headings, navigation order, repeated snapshot action identification, disabled actions and dialog focus recovery using synthetic data. Restore those settings afterward. Automated audits and screenshots alone do not close this gate.
+
+## Audit evidence and bounded false positives
+
+The simulator suite covers six sections in empty/populated Light/Dark states and maximum text in both appearances. It runs contrast separately before trait-changing audits, then runs every remaining audit category. Fixed maximum-text checks include contrast and clipping; Dynamic Type mutation is covered by the standard matrix.
+
+Xcode 27 reproduced contrast false positives for the native sidebar labels Blind Investigation, Backup Coverage and Monitoring. Apple's own captured images independently measured about 17:1. The suite checks each candidate against a visible matching sidebar row, decodes the full simulator-screen PNG with its orientation metadata, and requires measured pre-audit contrast of at least 7:1 before accepting that specific issue. The handler rejects missing elements, geometry mismatches, clipped rows and lower ratios. It retains each accepted crop and ratio in the result bundle. This follows Apple's documented approach to investigating and narrowly filtering false positives: https://developer.apple.com/videos/play/wwdc2023/10035/?time=847 . Automated audits remain separate from actual VoiceOver acceptance.
+
+Successful installation atomically records its exact predecessor in the private deployment directory's latest pointer. Rollback validates this pointer and the predecessor signature before changing files. Invalid/incomplete records fail closed. For records created before the pointer existed, the most recent complete directory by install time is selected; UUID lexical order is never used.

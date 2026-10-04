@@ -9,6 +9,7 @@ import CryptoKit
     }
 
     func applyPreview() async {
+        guard Self.auditMode == nil else { restoreStatus = "Sample restore action verified; no Home changes applied"; return }
         guard let preview, !busy, !journalCheckFailed, let home = adapter.home, let store, let key, recoveryJournals.isEmpty || (recoveryJournals.count == 1 && recoveryJournalID == recoveryJournals.first?.id) else { return }
         plannedUntil = Date().addingTimeInterval(900)
         busy = true; defer { busy = false; self.preview = nil; refreshJournals(); reconcile() }
@@ -114,6 +115,7 @@ import CryptoKit
         } catch { restoreStatus = "Restore refused: \(String(describing:error))"; event("apple_home.restore_refused",attributes:[:],severity:"ERROR") }
     }
     func removeCreatedRecoveryObjects(_ originalID: String) async {
+        guard Self.auditMode == nil else { restoreStatus = "Sample cleanup action verified"; return }
         guard !busy, let home = adapter.home, home.uniqueIdentifier.uuidString == selectedID,
               let key, let journalStore = try? JournalStore(root:root.appendingPathComponent("journals"),key:key),
               var original = try? journalStore.load(originalID), original.preview.homeID == selectedID, original.predecessorRestored else {
@@ -163,16 +165,19 @@ import CryptoKit
     }
 
     func refreshJournals() {
+        guard Self.auditMode == nil else { return }
         do {
             guard let key else { throw ObserverError.invalidArchive }
             recoveryJournals = try JournalStore(root:root.appendingPathComponent("journals"),key:key).pending(); journalCheckFailed = false
         } catch { restoreStatus = "Journal recovery check failed. Restore remains blocked."; journalCheckFailed = true }
     }
     func previewRollback(_ journal: RestoreJournal) {
+        guard Self.auditMode == nil else { preview = journal.preview; return }
         guard journal.preview.homeID == selectedID, let item = archives.first(where: { $0.file == journal.predecessorFile }) else { restoreStatus = "Select the original Home to preview this journal's predecessor."; return }
         makePreview(item); recoveryJournalID = journal.id
     }
     func acknowledgeRecovery(_ journal: RestoreJournal) {
+        guard Self.auditMode == nil else { recoveryJournals.removeAll { $0.id == journal.id }; return }
         do { var reviewed = journal; reviewed.state = "reviewed_recovery"; try persistJournal(reviewed); recoveryJournalID = nil; refreshJournals() }
         catch { restoreStatus = "Recovery acknowledgement could not be saved." }
     }

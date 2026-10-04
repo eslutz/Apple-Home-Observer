@@ -22,7 +22,7 @@ struct OverviewView: View {
                 }.frame(maxWidth: .infinity, alignment: .leading).padding(8)
             }
             if runtime.selectedID.isEmpty {
-                ContentUnavailableView("Choose a Home", systemImage: "house", description: Text("Grant Home Data access, then choose the Home to observe in the sidebar."))
+                ObserverEmptyState("Choose a Home", description: Text("Grant Home Data access, then choose the Home to observe in the sidebar."))
             } else {
                 GroupBox("Snapshot history") {
                     VStack(alignment: .leading, spacing: 12) {

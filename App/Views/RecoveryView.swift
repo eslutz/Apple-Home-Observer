@@ -15,8 +15,8 @@ struct RecoveryView: View {
             Text("Preview the exact configuration changes and resolve accessory identities before applying. A predecessor snapshot and recovery journal are saved first. Restored automations stay disabled for review.")
                 .foregroundStyle(ObserverStyle.secondaryText)
             AdaptiveActionStack {
-                Button("Import Encrypted Snapshot", action: importArchive)
-                Button("Import Recovery Key", action: importKey)
+                Button("Import Encrypted Snapshot", action: importArchive).buttonStyle(.bordered).foregroundStyle(.primary)
+                Button("Import Recovery Key", action: importKey).buttonStyle(.bordered).foregroundStyle(.primary)
             }
             if !runtime.restoreStatus.isEmpty {
                 Label(runtime.restoreStatus, systemImage: "info.circle").textSelection(.enabled)
@@ -81,9 +81,9 @@ struct RecoveryView: View {
                     }.frame(maxWidth: .infinity, alignment: .leading).padding(8)
                 }
             } else if runtime.recoveryJournals.isEmpty {
-                ContentUnavailableView("Choose a snapshot", systemImage: "arrow.counterclockwise", description: Text("Select Preview Restore in Backups, or import an encrypted snapshot to inspect its changes."))
+                ObserverEmptyState("Choose a snapshot", description: Text("Select Preview Restore in Backups, or import an encrypted snapshot to inspect its changes."))
             }
-            Label("Restoring definitions does not execute scenes or move devices.", systemImage: "hand.raised")
+            Text("Restoring definitions does not execute scenes or move devices.")
                 .font(.callout).foregroundStyle(ObserverStyle.secondaryText)
         }
         .confirmationDialog("Apply the reviewed restore?", isPresented: $confirmRestore, titleVisibility: .visible) {

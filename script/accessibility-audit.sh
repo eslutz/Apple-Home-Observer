@@ -3,7 +3,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 : "${OBSERVER_AUDIT_DEVICE:?Set OBSERVER_AUDIT_DEVICE to an isolated iPad simulator UDID}"
-task_test_options=(-only-testing:AccessibilityUITests/AccessibilityTests -skip-testing:AccessibilityUITests/AccessibilityTests/testOverviewContrast)
+task_test_options=(-only-testing:AccessibilityUITests/AccessibilityTests/testEmptyAndPopulatedScreensInBothAppearances -only-testing:AccessibilityUITests/AccessibilityTests/testLargestTextScreens)
 if [[ -n "${OBSERVER_AUDIT_TEST:-}" ]]; then
   task_test_options=(-only-testing:"AccessibilityUITests/AccessibilityTests/$OBSERVER_AUDIT_TEST")
 fi

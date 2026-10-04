@@ -55,7 +55,7 @@ struct CoverageView: View {
                     Text("Showing \(entries.count) of \(inventory.coverage.count) notices")
                         .font(.callout).foregroundStyle(ObserverStyle.secondaryText)
                     if entries.isEmpty {
-                        ContentUnavailableView("No matching notices", systemImage: "magnifyingglass", description: Text("Try an object name, identifier, or reason."))
+                        ObserverEmptyState("No matching notices", description: Text("Try an object name, identifier, or reason."))
                     } else {
                         ForEach(entries) { entry in
                             GroupBox {
@@ -74,7 +74,7 @@ struct CoverageView: View {
                     }
                 }
             } else {
-                ContentUnavailableView("Waiting for inventory", systemImage: "checklist", description: Text("Coverage notices appear after the selected Home is available."))
+                ObserverEmptyState("Waiting for inventory", description: Text("Coverage notices appear after the selected Home is available."))
             }
             DisclosureGroup("Local storage and monitoring") {
                 Text(runtime.root.path).font(.callout.monospaced()).textSelection(.enabled).padding(.top, 8)
