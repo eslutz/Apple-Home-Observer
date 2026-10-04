@@ -1,0 +1,67 @@
+name: AppleHomeObserver
+options:
+  bundleIdPrefix: org.example
+  deploymentTarget:
+    iOS: '17.0'
+settings:
+  base:
+    SWIFT_VERSION: '5.0'
+    CODE_SIGN_IDENTITY: Apple Development
+    SUPPORTS_MACCATALYST: YES
+    DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER: NO
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+targets:
+  AppleHomeObserver:
+    type: application
+    configFiles:
+      Debug: Config/Defaults.xcconfig
+      Release: Config/Defaults.xcconfig
+    platform: iOS
+    sources:
+      - App
+      - Sources/ObserverCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(OBSERVER_BUNDLE_ID)
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppleHomeObserver
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_NSHomeKitUsageDescription: 'Back up Home configuration and observe metadata and blind command outcomes. Restores require an explicit preview and Apply.'
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        CODE_SIGN_ENTITLEMENTS: App/AppleHomeObserver.entitlements
+        TARGETED_DEVICE_FAMILY: '2'
+        'TARGETED_DEVICE_FAMILY[sdk=macosx*]': '6'
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: NO
+        SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
+        INFOPLIST_KEY_CFBundleDisplayName: 'Apple Home Observer'
+        ENABLE_APP_SANDBOX: YES
+        INFOPLIST_KEY_ObserverMonitoringFolder: $(OBSERVER_MONITORING_FOLDER)
+
+  AccessibilityUITests:
+    type: bundle.ui-testing
+    configFiles:
+      Debug: Config/Defaults.xcconfig
+      Release: Config/Defaults.xcconfig
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: AppleHomeObserver
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(OBSERVER_BUNDLE_ID).AccessibilityUITests
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_STYLE: Automatic
+        PROVISIONING_PROFILE_SPECIFIER: ''
+        TEST_TARGET_NAME: AppleHomeObserver
+schemes:
+  AppleHomeObserver:
+    build:
+      targets:
+        AppleHomeObserver: all
+  AccessibilityAudit:
+    build:
+      targets:
+        AppleHomeObserver: all
+        AccessibilityUITests: [test]
+    test:
+      targets: [AccessibilityUITests]

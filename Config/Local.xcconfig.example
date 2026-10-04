@@ -1,0 +1,5 @@
+// Copy to Local.xcconfig (ignored). Enable HomeKit for your identifier.
+OBSERVER_BUNDLE_ID = org.example.yourapp
+DEVELOPMENT_TEAM = YOURTEAMID
+CODE_SIGN_STYLE = Automatic
+// PROVISIONING_PROFILE_SPECIFIER = Your Catalyst development profile

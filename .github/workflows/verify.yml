@@ -1,0 +1,17 @@
+name: Verify
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  core:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check public source
+        run: python3 script/check-public-source.py
+      - name: Build offline verifier
+        run: swift build --product aho-verify
+      - name: Core tests
+        run: swift test
+      - name: Ciphertext packaging tests
+        run: python3 -m unittest discover -s Tests -p 'test_*.py'
