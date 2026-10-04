@@ -16,7 +16,7 @@ final class AccessibilityTests: XCTestCase {
             let row = app.descendants(matching: .any).matching(identifier: "observer.section." + id).firstMatch
             if row.exists && row.isHittable { contrastLabelFrames[label] = row.frame }
         }
-        let heading = app.staticTexts["Home"].firstMatch
+        let heading = app.descendants(matching: .any).matching(identifier: "observer.sidebar").firstMatch.staticTexts["Home"].firstMatch
         if heading.exists && heading.isHittable { contrastLabelFrames["Home"] = heading.frame }
         let home = app.descendants(matching: .any).matching(identifier: "observer.home").firstMatch
         if home.exists && home.isHittable, let value = home.value as? String { contrastLabelFrames[value] = home.frame }
@@ -161,11 +161,39 @@ final class AccessibilityTests: XCTestCase {
         select("coverage", in: app)
         let capture = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         capture.name = "populated-coverage-hit-target"; capture.lifetime = .keepAlways; add(capture)
+        captureContrastBaseline(in: app)
+        try app.performAccessibilityAudit(for: .contrast) { issue in
+            if self.verifiedSidebarContrast(issue, in: app) { return true }
+            print("AUDIT coverage-contrast: \(issue.compactDescription) | \(issue.element?.label ?? "no element") | \(issue.detailedDescription)")
+            return false
+        }
         try app.performAccessibilityAudit(for: .all.subtracting(.contrast)) { issue in
             print("AUDIT coverage: \(issue.compactDescription) | \(issue.element?.label ?? "no element") | \(issue.detailedDescription)")
             return false
         }
         app.terminate()
+    }
+
+    func testFocusedDynamicType() throws {
+        XCUIDevice.shared.orientation = .landscapeLeft
+        let app = XCUIApplication()
+        app.launchEnvironment["OBSERVER_UI_AUDIT"] = "populated"
+        app.launchEnvironment["OBSERVER_UI_APPEARANCE"] = "light"
+        app.launch()
+        defer { app.terminate() }
+        select("blinds", in: app)
+        try app.performAccessibilityAudit(for: .dynamicType) { issue in
+            print("AUDIT dynamic-type: \(issue.compactDescription) | \(issue.element?.label ?? "no element") | \(issue.detailedDescription)")
+            return false
+        }
+        captureContrastBaseline(in: app)
+        try app.performAccessibilityAudit(for: .contrast) { issue in
+            return self.verifiedSidebarContrast(issue, in: app)
+        }
+        try app.performAccessibilityAudit(for: .all.subtracting(.contrast)) { issue in
+            print("AUDIT combined: \(issue.compactDescription) | \(issue.element?.label ?? "no element") | \(issue.detailedDescription)")
+            return false
+        }
     }
 
     func testOverviewContrast() throws {
@@ -226,7 +254,10 @@ final class AccessibilityTests: XCTestCase {
                         print("AUDIT \(fixture)/\(appearance)/\(section): \(issue.compactDescription) | \(issue.element?.label ?? "no element") | \(issue.detailedDescription)")
                         return false
                     }
-                    try app.performAccessibilityAudit(for: .all.subtracting(.contrast))
+                    try app.performAccessibilityAudit(for: .all.subtracting(.contrast)) { issue in
+                        print("AUDIT \(fixture)/\(appearance)/\(section): \(issue.compactDescription) | \(issue.element?.label ?? "no element") | \(issue.detailedDescription)")
+                        return false
+                    }
                 }
                 app.terminate()
             }

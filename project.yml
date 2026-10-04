@@ -88,20 +88,22 @@ targets:
     type: bundle.ui-testing
     platform: macOS
     sources: [NativeUITests]
-    dependencies:
-      - target: AcceptanceApp
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: org.example.AppleHomeObserver.NativeTests
         GENERATE_INFOPLIST_FILE: YES
         CODE_SIGN_IDENTITY: '-'
         CODE_SIGN_STYLE: Automatic
-        TEST_TARGET_NAME: AcceptanceApp
+        SUPPORTS_MACCATALYST: NO
+        SUPPORTED_PLATFORMS: macosx
 schemes:
-  NativeAcceptance:
+  AcceptanceFixture:
     build:
       targets:
         AcceptanceApp: all
+  NativeAcceptance:
+    build:
+      targets:
         NativeAcceptanceTests: [test]
     test:
       targets: [NativeAcceptanceTests]

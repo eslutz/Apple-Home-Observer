@@ -1,12 +1,21 @@
 import XCTest
 
 final class NativeAcceptanceTests: XCTestCase {
+    override func setUp() {
+        super.setUp()
+        continueAfterFailure = false
+    }
+
     private func select(_ section: String, in app: XCUIApplication) {
         let row = app.descendants(matching: .any).matching(identifier: "observer.section." + section).firstMatch
         if !row.isHittable && app.buttons["observer.navigation.toggle"].exists {
             app.buttons["observer.navigation.toggle"].click()
         }
         XCTAssertTrue(row.waitForExistence(timeout: 5))
+        let frame = row.frame
+        XCTAssertTrue(frame.origin.x.isFinite && frame.origin.y.isFinite && frame.width > 0 && frame.height > 0,
+                      "Native AX row has invalid geometry: \(section), \(frame)")
+        XCTAssertTrue(row.isHittable, "Native sidebar row is not hittable: \(section)")
         row.click()
     }
     func testScreensAndKeyboardCommands() throws {
