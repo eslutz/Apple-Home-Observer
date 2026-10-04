@@ -76,6 +76,7 @@ struct ObserverView: View {
                             Image(systemName: item.icon).accessibilityHidden(true)
                             Text(item.title).lineLimit(nil).fixedSize(horizontal: false, vertical: true)
                         }
+                            .foregroundStyle(.primary)
                             .accessibilityElement(children: .combine)
                             .accessibilityIdentifier("observer.section." + item.rawValue)
                             .tag(item.rawValue)
@@ -84,7 +85,7 @@ struct ObserverView: View {
             }
             .navigationSplitViewColumnWidth(min: 220, ideal: textSize.isAccessibilitySize ? 440 : 260, max: 520)
             .listStyle(.sidebar)
-            .tint(ObserverStyle.linkTint)
+            .tint(ObserverStyle.solidButtonTint)
             .accessibilityIdentifier("observer.sidebar")
             .navigationTitle("Observer")
             .navigationBarTitleDisplayMode(.inline)
