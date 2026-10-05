@@ -29,10 +29,12 @@ Create an Xcode Cloud workflow for the Apple Home Observer app record with these
 - Configuration: Release
 - Build action: Archive, macOS, Any Mac (Mac Catalyst), with TestFlight (Internal Testing Only) distribution preparation
 - Start condition: Manual, unless the owner later chooses a branch trigger
+- Post-action: TestFlight Internal Testing, using the Mac Catalyst archive and an existing internal group. This uploads the build to TestFlight. Group membership is managed separately; do not invite users implicitly.
 - Distribution: TestFlight internal testing; do not submit the app for App Review
+- Clean: Off for internal testing, so later builds can reuse caches
 - Environment values: Xcode Cloud supplies `CI_BUNDLE_ID` and `CI_TEAM_ID`; `Config/Defaults.xcconfig` maps them to the app's bundle identifier and signing team. Keep signing credentials in Xcode Cloud-managed signing, never in source control.
 
-The internal TestFlight group and its membership are managed in App Store Connect. Add a build to the group only after Xcode Cloud reports a successful archive and App Store Connect finishes processing it. Keep automatic distribution off until the owner confirms the intended tester list.
+The internal TestFlight group and its membership are managed in App Store Connect. Add a build to the group only after Xcode Cloud reports a successful archive and App Store Connect finishes processing it. Use only the owner-approved internal group; an empty group can receive the build without sending tester invitations. Confirm membership before distributing to additional people.
 
 ## Validation
 
