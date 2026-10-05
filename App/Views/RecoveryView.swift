@@ -83,12 +83,12 @@ struct RecoveryView: View {
                         }
                     }
                     if let preview = runtime.preview {
-                        GroupBox("\(preview.operations.count) proposed changes") {
+                        GroupBox(preview.operations.count == 1 ? "1 proposed change" : "\(preview.operations.count) proposed changes") {
                             VStack(alignment: .leading, spacing: 12) {
                                 ForEach(Array(preview.operations.enumerated()), id: \.offset) { _, operation in
                                     VStack(alignment: .leading, spacing: 3) {
                                         Text(operation.name ?? operation.savedID).font(.headline)
-                                        Text(operation.kind.rawValue).font(.callout).foregroundStyle(ObserverStyle.secondaryText)
+                                        Text(operation.kind.displayName).font(.callout).foregroundStyle(ObserverStyle.secondaryText)
                                     }.textSelection(.enabled)
                                     Divider()
                                 }
@@ -142,5 +142,21 @@ struct RecoveryView: View {
         }
         .accessibilityIdentifier("observer.recovery.confirmation")
         .onAppear(perform: revealConfirmation)
+    }
+}
+
+private extension RestoreOperation.Kind {
+    var displayName: String {
+        switch self {
+        case .homeName: "Home name"
+        case .room: "Room"
+        case .zone: "Zone"
+        case .accessoryName: "Accessory name"
+        case .accessoryRoom: "Accessory room"
+        case .serviceName: "Service name"
+        case .group: "Service group"
+        case .scene: "Scene"
+        case .automation: "Automation"
+        }
     }
 }

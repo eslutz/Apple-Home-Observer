@@ -49,9 +49,9 @@ struct AppleHomeObserverApp: App {
             CommandMenu("Acceptance") {
                 Button("Toggle Test Appearance") { acceptanceAppearance = auditAppearance == .dark ? .light : .dark }
                 #if targetEnvironment(macCatalyst)
-                ForEach([1200, 980, 680], id: \.self) { width in
+                ForEach([1280, 1200, 980, 680], id: \.self) { width in
                     Button("Resize Test Window " + String(width)) {
-                        let height = width == 1200 ? 850 : (width == 980 ? 720 : 520)
+                        let height = width == 1280 ? 800 : (width == 1200 ? 850 : (width == 980 ? 720 : 520))
                         CatalystWindowConfiguration.requestAcceptanceSize(CGSize(width: width, height: height))
                     }
                 }

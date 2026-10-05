@@ -6,6 +6,8 @@ options:
 settings:
   base:
     SWIFT_VERSION: '5.0'
+    MARKETING_VERSION: '1.0'
+    CURRENT_PROJECT_VERSION: '1'
     CODE_SIGN_IDENTITY: Apple Development
     SUPPORTS_MACCATALYST: YES
     DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER: NO
@@ -17,6 +19,8 @@ targets:
       path: build/generated/AppleHomeObserver-Info.plist
       properties:
         ObserverMonitoringFolder: $(OBSERVER_MONITORING_FOLDER)
+        ITSAppUsesNonExemptEncryption: false
+        LSApplicationCategoryType: public.app-category.utilities
     configFiles:
       Debug: Config/Defaults.xcconfig
       Release: Config/Defaults.xcconfig

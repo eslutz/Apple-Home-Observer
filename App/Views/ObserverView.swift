@@ -57,14 +57,16 @@ struct ObserverView: View {
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Home").font(.body).foregroundStyle(.primary)
-                        Picker("Home", selection: $runtime.selectedID) {
-                            Text("Choose a Home").tag("")
-                            ForEach(runtime.homeChoices) { home in
-                                Text(home.name).tag(home.id)
+                        Menu {
+                            Picker("Home", selection: $runtime.selectedID) {
+                                Text("Choose a Home").tag("")
+                                ForEach(runtime.homeChoices) { home in
+                                    Text(home.name).tag(home.id)
+                                }
                             }
+                        } label: {
+                            Text(runtime.homeChoices.first(where: { $0.id == runtime.selectedID })?.name ?? "Choose a Home")
                         }
-                        .pickerStyle(.menu)
-                        .labelsHidden()
                         .disabled(runtime.busy)
                         .foregroundStyle(.primary)
                         .frame(maxWidth: .infinity, alignment: .leading)

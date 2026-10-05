@@ -122,7 +122,8 @@ enum BlindCommandOutcome: Equatable {
                 if mode == "busy" { busy = true }
                 if mode == "incomplete" { health.inventoryReady = false; status = "Sample inventory is incomplete" }
                 if mode == "error" { health.error = "sample_error"; status = "Sample refresh failed. Try again." }
-                if mode == "recovery" || mode == "interrupted" {
+                if mode == "release-screenshots" { status = "Observing sample inventory" }
+                if mode == "recovery" || mode == "interrupted" || mode == "release-screenshots" {
                     var saved = inventory!; saved.name = "Sample restored Home"
                     savedForRestore = saved; preview = try? RestorePlanner.preview(saved: saved, current: inventory!)
                     if mode == "interrupted", let preview {

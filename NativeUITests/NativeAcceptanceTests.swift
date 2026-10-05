@@ -1,4 +1,5 @@
 import XCTest
+import ImageIO
 
 final class NativeAcceptanceTests: XCTestCase {
     override func setUp() {
@@ -78,6 +79,38 @@ final class NativeAcceptanceTests: XCTestCase {
             return abs(width - size.width) <= 16 && abs(height - size.height) <= 16
         }, object: nil)
         XCTAssertEqual(XCTWaiter.wait(for: [resized], timeout: 5), .completed)
+    }
+
+    // Local release capture only: this app has no HomeKit entitlement and uses
+    // synthetic inventory. Keep this outside the GitHub Actions workflow.
+    func testReleaseScreenshots() throws {
+        let app = XCUIApplication(bundleIdentifier: "org.example.AppleHomeObserver.Acceptance")
+        app.launchEnvironment["OBSERVER_UI_AUDIT"] = "release-screenshots"
+        let acceptedSizes = ["1280x800", "1440x900", "2560x1600", "2880x1800"]
+        for appearance in ["light", "dark"] {
+            app.launchEnvironment["OBSERVER_UI_APPEARANCE"] = appearance
+            app.launch()
+            XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 15))
+            resize(CGSize(width: 1280, height: 800), in: app)
+            for section in ["overview", "backups", "recovery"] {
+                select(section, in: app)
+                let window = app.descendants(matching: .window)
+                    .matching(NSPredicate(format: "label == %@", "Apple Home Observer")).firstMatch
+                XCTAssertTrue(window.exists)
+                let capture = window.screenshot()
+                let source = try XCTUnwrap(CGImageSourceCreateWithData(capture.pngRepresentation as CFData, nil))
+                let properties = try XCTUnwrap(CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [String: Any])
+                let width = try XCTUnwrap(properties[kCGImagePropertyPixelWidth as String] as? Int)
+                let height = try XCTUnwrap(properties[kCGImagePropertyPixelHeight as String] as? Int)
+                let dimensions = "\(width)x\(height)"
+                let attachment = XCTAttachment(screenshot: capture)
+                attachment.name = "release-\(appearance)-\(section)-\(dimensions)"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                XCTAssertTrue(acceptedSizes.contains(dimensions), "Screenshot size is not accepted for Mac: \(dimensions)")
+            }
+            app.terminate()
+        }
     }
 
     func testScreensAndKeyboardCommands() throws {
