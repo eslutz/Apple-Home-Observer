@@ -21,3 +21,6 @@ Config/deployment.env
 *.p12
 *.key
 .DS_Store
+
+# Deployment-specific Xcode Cloud product linkage
+AppleHomeObserver.xcodeproj/xcshareddata/xcodecloud/
