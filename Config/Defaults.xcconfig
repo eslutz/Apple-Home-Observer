@@ -1,5 +1,7 @@
-OBSERVER_BUNDLE_ID = org.example.AppleHomeObserver
-DEVELOPMENT_TEAM =
+// Xcode Cloud provides the registered app bundle ID and team ID through its
+// workflow environment. Local builds can override these in Local.xcconfig.
+OBSERVER_BUNDLE_ID = $(CI_BUNDLE_ID)
+DEVELOPMENT_TEAM = $(CI_TEAM_ID)
 CODE_SIGN_STYLE = Automatic
 PROVISIONING_PROFILE_SPECIFIER =
 #include? "Local.xcconfig"

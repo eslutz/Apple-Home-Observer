@@ -42,7 +42,7 @@ Screenshots: capture synthetic, clearly representative macOS Overview, Backups a
 
 ## Distribution boundary
 
-Archive and local validation are preparation only. Before upload, verify an App Store-compatible signing profile and distribution identity. Before assigning testers or submitting for review, obtain owner review of the concrete archive and metadata. No TestFlight build is available until Apple processes an uploaded build.
+TestFlight deployments are performed through Xcode Cloud; see [XCODE_CLOUD.md](XCODE_CLOUD.md). Do not upload a local archive or package directly. Before assigning testers or submitting for App Review, obtain owner review of the concrete Xcode Cloud build and metadata. No TestFlight build is available until Xcode Cloud creates one and App Store Connect finishes processing it.
 
 ## Review answers and release capture
 

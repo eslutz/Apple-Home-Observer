@@ -1,0 +1,827 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00E99FD7713490304A4DC648 /* ObserverConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4481FBD01D1FB69FAD3EFCA9 /* ObserverConfiguration.swift */; };
+		06F5E5E42E50969FA524BCB1 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFDA766DBCC92301ED05103 /* Models.swift */; };
+		107370114550E5C97CA04F65 /* Runtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0412B03126B1041833DF8AB /* Runtime.swift */; };
+		11BFE471AD4EF613B8E493BA /* AccessibilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B64982ECDC3224598F3DE363 /* AccessibilityTests.swift */; };
+		160281AD3876E04C761A074C /* HomeAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF97AFA97A1B18F4DA314EC3 /* HomeAdapter.swift */; };
+		1A634E92F1526327F3D1517C /* Restore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80B12523B24E8F0C5CC867D /* Restore.swift */; };
+		208256AE04DF10C3ACF52330 /* NativeHomeCaptionContrast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 564B1887B576EEF6D7A9FFBC /* NativeHomeCaptionContrast.swift */; };
+		2266ABCBC182B907B43E7473 /* BlindInvestigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962DBFFD239FC0D524340661 /* BlindInvestigationView.swift */; };
+		2F2154C9B6AE2CB30542E433 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFDA766DBCC92301ED05103 /* Models.swift */; };
+		3809C9565248AEE3E083659D /* BackupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21B25DA9F4CC71612AB962A /* BackupsView.swift */; };
+		39667777FDD51CA5B71EBEAF /* RecoveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0092EC043B6ED4E04AEB5144 /* RecoveryView.swift */; };
+		3C721344040E7707828BE0BA /* RestoreJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B942E13258AFAD4DF519D784 /* RestoreJournal.swift */; };
+		4A5E91D476EB138ABE29D898 /* Restore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F80B12523B24E8F0C5CC867D /* Restore.swift */; };
+		4CD239687FDF42626E1BCBB5 /* NativeWindowTitleContrast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81104EFE039C9D2F70FA37F0 /* NativeWindowTitleContrast.swift */; };
+		4D437EF8B1F19FB0D3FC16B5 /* ObserverStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3067E8C32F8DADA18517FC26 /* ObserverStyle.swift */; };
+		4DB34932CB38FCE653C0E35E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D15E9B85F2682D5EC5D8C823 /* PrivacyInfo.xcprivacy */; };
+		4E52D6FA3A1E2EA1E73B7ADA /* ObserverStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3067E8C32F8DADA18517FC26 /* ObserverStyle.swift */; };
+		4ED3EE07AAC9E3B412CE6B90 /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DE6DBEDBB5FA2D7AA1EC62 /* OverviewView.swift */; };
+		54742BF869A3CEA6FD30DD3D /* CatalystWindowConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CBC1F4AABA708A7EE95597 /* CatalystWindowConfiguration.swift */; };
+		5C6AE89A5B93F3C075138928 /* OverviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34DE6DBEDBB5FA2D7AA1EC62 /* OverviewView.swift */; };
+		6CAB6580BEE274E6C5907893 /* Monitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E6228A2DABE63AAACB166E /* Monitoring.swift */; };
+		6ECFE0F56C896F351D1BD9F6 /* RestoreExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD82A1E79CF62775A5F4257 /* RestoreExecutor.swift */; };
+		7AF968727B28AB471826F13F /* ObserverConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4481FBD01D1FB69FAD3EFCA9 /* ObserverConfiguration.swift */; };
+		7D1ABE6564546D892A100D7B /* InventoryGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6712F295749D22DDAD3202C /* InventoryGate.swift */; };
+		7F70970B66C8420D623703B7 /* ObserverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FA86001F2191E251070239 /* ObserverView.swift */; };
+		805D5CE8A69E51C6C7C07312 /* RestoreExecutor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAD82A1E79CF62775A5F4257 /* RestoreExecutor.swift */; };
+		81F7D5B6C82739692324A9D2 /* RestoreJournal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B942E13258AFAD4DF519D784 /* RestoreJournal.swift */; };
+		845EC391ADFE4220ADBE90D6 /* Runtime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0412B03126B1041833DF8AB /* Runtime.swift */; };
+		899014CEA236B3E0C2B88B28 /* HomeAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF97AFA97A1B18F4DA314EC3 /* HomeAdapter.swift */; };
+		8BED52F93D9E44FB6953B07C /* RecoveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0092EC043B6ED4E04AEB5144 /* RecoveryView.swift */; };
+		8E8B5E4ACF9753A27022EBFB /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F801B4F0CD6961A92F87136 /* Archive.swift */; };
+		97ACC2CF46D9960F7293011D /* CatalystWindowConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34CBC1F4AABA708A7EE95597 /* CatalystWindowConfiguration.swift */; };
+		9BEFC0DE68E7DD5FA200968E /* AppleHomeObserverApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58405AC36846A1216E598A9 /* AppleHomeObserverApp.swift */; };
+		A2B8B6484221FA1E76789ADC /* AppleHomeObserver.icon in Resources */ = {isa = PBXBuildFile; fileRef = 1885677689CE5F9CE79B4A34 /* AppleHomeObserver.icon */; };
+		A2FCF92E471B2EA8F05D0138 /* AppleHomeObserverApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C58405AC36846A1216E598A9 /* AppleHomeObserverApp.swift */; };
+		A4B1184FD425A8B8AD47BE5E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D15E9B85F2682D5EC5D8C823 /* PrivacyInfo.xcprivacy */; };
+		A63F5CE71A87376BFF0094A5 /* CoverageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178C15AC3DD3C9E7713C244B /* CoverageView.swift */; };
+		A6A99BCC94B0AC15BAF17B43 /* MonitoringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874DCBA10C3419A31941ACAD /* MonitoringView.swift */; };
+		B116660D54D36A9393A66B3A /* AppleHomeObserver.icon in Resources */ = {isa = PBXBuildFile; fileRef = 1885677689CE5F9CE79B4A34 /* AppleHomeObserver.icon */; };
+		B1BF0B227EB0829D6608A652 /* Archive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F801B4F0CD6961A92F87136 /* Archive.swift */; };
+		B3D754D583AEFCE56F4EAD95 /* BackupsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21B25DA9F4CC71612AB962A /* BackupsView.swift */; };
+		B7C2C4A4449F1FD3A1872A43 /* MonitoringView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 874DCBA10C3419A31941ACAD /* MonitoringView.swift */; };
+		C1B39A9A2BA33265802E104D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8A79C182B044C38204BE2A5 /* Assets.xcassets */; };
+		C5CEB1242B6336B4AFB60D3A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8A79C182B044C38204BE2A5 /* Assets.xcassets */; };
+		D69AF0F490A964BCB999C7A1 /* InventoryGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6712F295749D22DDAD3202C /* InventoryGate.swift */; };
+		DA0F83356F478E2259D2F1AC /* CoverageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 178C15AC3DD3C9E7713C244B /* CoverageView.swift */; };
+		E2E32A022E1333E99470BE05 /* Monitoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24E6228A2DABE63AAACB166E /* Monitoring.swift */; };
+		E4FA14D07B99207134F45D1F /* NativeAcceptanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C0C71A51F25BCCF517D61E /* NativeAcceptanceTests.swift */; };
+		E6B85ED9AF87D657316F2A1B /* ObserverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FA86001F2191E251070239 /* ObserverView.swift */; };
+		F0C0C73896FC3B8621D493B8 /* PrivateDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBBA665634B18290F1A7821 /* PrivateDocument.swift */; };
+		F148C6527B817197B7C2B92F /* BlindInvestigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 962DBFFD239FC0D524340661 /* BlindInvestigationView.swift */; };
+		F2F771F5E03D480B17E92857 /* PrivateDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBBA665634B18290F1A7821 /* PrivateDocument.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AB19D8ED478CC926967773BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 669DCC31F612EB4D4F2BC4FD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6F76988A64E3E4475283B7BB;
+			remoteInfo = AppleHomeObserver;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0092EC043B6ED4E04AEB5144 /* RecoveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryView.swift; sourceTree = "<group>"; };
+		178C15AC3DD3C9E7713C244B /* CoverageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoverageView.swift; sourceTree = "<group>"; };
+		1885677689CE5F9CE79B4A34 /* AppleHomeObserver.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = AppleHomeObserver.icon; sourceTree = "<group>"; };
+		24E6228A2DABE63AAACB166E /* Monitoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Monitoring.swift; sourceTree = "<group>"; };
+		3067E8C32F8DADA18517FC26 /* ObserverStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserverStyle.swift; sourceTree = "<group>"; };
+		34CBC1F4AABA708A7EE95597 /* CatalystWindowConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalystWindowConfiguration.swift; sourceTree = "<group>"; };
+		34DE6DBEDBB5FA2D7AA1EC62 /* OverviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewView.swift; sourceTree = "<group>"; };
+		3F801B4F0CD6961A92F87136 /* Archive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Archive.swift; sourceTree = "<group>"; };
+		410259AE71783E3FCB5AE9EF /* AppleHomeObserver.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AppleHomeObserver.entitlements; sourceTree = "<group>"; };
+		4481FBD01D1FB69FAD3EFCA9 /* ObserverConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserverConfiguration.swift; sourceTree = "<group>"; };
+		4DF39D52EFA6B9EBCD5E8D11 /* AccessibilityUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = AccessibilityUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		564B1887B576EEF6D7A9FFBC /* NativeHomeCaptionContrast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeHomeCaptionContrast.swift; sourceTree = "<group>"; };
+		62C0C71A51F25BCCF517D61E /* NativeAcceptanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeAcceptanceTests.swift; sourceTree = "<group>"; };
+		72DC94B4E48AABB9816DB2AE /* Acceptance.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Acceptance.entitlements; sourceTree = "<group>"; };
+		7FBBA665634B18290F1A7821 /* PrivateDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateDocument.swift; sourceTree = "<group>"; };
+		81104EFE039C9D2F70FA37F0 /* NativeWindowTitleContrast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeWindowTitleContrast.swift; sourceTree = "<group>"; };
+		874DCBA10C3419A31941ACAD /* MonitoringView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoringView.swift; sourceTree = "<group>"; };
+		8BABBEDDA4FFB9B778A939D5 /* NativeAcceptanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NativeAcceptanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		962DBFFD239FC0D524340661 /* BlindInvestigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlindInvestigationView.swift; sourceTree = "<group>"; };
+		A2CAF67D9298AEDCF595F3EB /* AppleHomeObserver.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AppleHomeObserver.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8A79C182B044C38204BE2A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ACFDA766DBCC92301ED05103 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		AF97AFA97A1B18F4DA314EC3 /* HomeAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAdapter.swift; sourceTree = "<group>"; };
+		B0412B03126B1041833DF8AB /* Runtime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Runtime.swift; sourceTree = "<group>"; };
+		B64982ECDC3224598F3DE363 /* AccessibilityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityTests.swift; sourceTree = "<group>"; };
+		B942E13258AFAD4DF519D784 /* RestoreJournal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreJournal.swift; sourceTree = "<group>"; };
+		C2FA86001F2191E251070239 /* ObserverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserverView.swift; sourceTree = "<group>"; };
+		C58405AC36846A1216E598A9 /* AppleHomeObserverApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleHomeObserverApp.swift; sourceTree = "<group>"; };
+		D01B82A5754D20D87F61DF73 /* AcceptanceApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = AcceptanceApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D15E9B85F2682D5EC5D8C823 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		DD130CFAB3699E6498608362 /* Defaults.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Defaults.xcconfig; sourceTree = "<group>"; };
+		E21B25DA9F4CC71612AB962A /* BackupsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupsView.swift; sourceTree = "<group>"; };
+		F6712F295749D22DDAD3202C /* InventoryGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryGate.swift; sourceTree = "<group>"; };
+		F80B12523B24E8F0C5CC867D /* Restore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restore.swift; sourceTree = "<group>"; };
+		FAD82A1E79CF62775A5F4257 /* RestoreExecutor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreExecutor.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		05B106B378A6CC7FE1600B80 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E21B25DA9F4CC71612AB962A /* BackupsView.swift */,
+				962DBFFD239FC0D524340661 /* BlindInvestigationView.swift */,
+				178C15AC3DD3C9E7713C244B /* CoverageView.swift */,
+				874DCBA10C3419A31941ACAD /* MonitoringView.swift */,
+				3067E8C32F8DADA18517FC26 /* ObserverStyle.swift */,
+				C2FA86001F2191E251070239 /* ObserverView.swift */,
+				34DE6DBEDBB5FA2D7AA1EC62 /* OverviewView.swift */,
+				0092EC043B6ED4E04AEB5144 /* RecoveryView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		326D65CBCE8F3BC79F89C9CE /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				34CBC1F4AABA708A7EE95597 /* CatalystWindowConfiguration.swift */,
+				4481FBD01D1FB69FAD3EFCA9 /* ObserverConfiguration.swift */,
+				7FBBA665634B18290F1A7821 /* PrivateDocument.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		3EEA9198EA8BFD7F7A402AC2 /* NativeUITests */ = {
+			isa = PBXGroup;
+			children = (
+				62C0C71A51F25BCCF517D61E /* NativeAcceptanceTests.swift */,
+				564B1887B576EEF6D7A9FFBC /* NativeHomeCaptionContrast.swift */,
+				81104EFE039C9D2F70FA37F0 /* NativeWindowTitleContrast.swift */,
+			);
+			path = NativeUITests;
+			sourceTree = "<group>";
+		};
+		3FA9134DF9666FC1491855E4 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				72DC94B4E48AABB9816DB2AE /* Acceptance.entitlements */,
+				410259AE71783E3FCB5AE9EF /* AppleHomeObserver.entitlements */,
+				1885677689CE5F9CE79B4A34 /* AppleHomeObserver.icon */,
+				C58405AC36846A1216E598A9 /* AppleHomeObserverApp.swift */,
+				A8A79C182B044C38204BE2A5 /* Assets.xcassets */,
+				AF97AFA97A1B18F4DA314EC3 /* HomeAdapter.swift */,
+				D15E9B85F2682D5EC5D8C823 /* PrivacyInfo.xcprivacy */,
+				FAD82A1E79CF62775A5F4257 /* RestoreExecutor.swift */,
+				B0412B03126B1041833DF8AB /* Runtime.swift */,
+				326D65CBCE8F3BC79F89C9CE /* Support */,
+				05B106B378A6CC7FE1600B80 /* Views */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		7153B26B3A400EA7EA02F2CE /* ObserverCore */ = {
+			isa = PBXGroup;
+			children = (
+				3F801B4F0CD6961A92F87136 /* Archive.swift */,
+				F6712F295749D22DDAD3202C /* InventoryGate.swift */,
+				ACFDA766DBCC92301ED05103 /* Models.swift */,
+				24E6228A2DABE63AAACB166E /* Monitoring.swift */,
+				F80B12523B24E8F0C5CC867D /* Restore.swift */,
+				B942E13258AFAD4DF519D784 /* RestoreJournal.swift */,
+			);
+			name = ObserverCore;
+			path = Sources/ObserverCore;
+			sourceTree = "<group>";
+		};
+		942635EE061CE3A9BDFB74C8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D01B82A5754D20D87F61DF73 /* AcceptanceApp.app */,
+				4DF39D52EFA6B9EBCD5E8D11 /* AccessibilityUITests.xctest */,
+				A2CAF67D9298AEDCF595F3EB /* AppleHomeObserver.app */,
+				8BABBEDDA4FFB9B778A939D5 /* NativeAcceptanceTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B0D27D77D7F0709D813AFE05 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				DD130CFAB3699E6498608362 /* Defaults.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		F6007EF9A2617A551FED58B2 = {
+			isa = PBXGroup;
+			children = (
+				3FA9134DF9666FC1491855E4 /* App */,
+				B0D27D77D7F0709D813AFE05 /* Config */,
+				3EEA9198EA8BFD7F7A402AC2 /* NativeUITests */,
+				7153B26B3A400EA7EA02F2CE /* ObserverCore */,
+				FC0AB5E7F47036DC57A31D92 /* UITests */,
+				942635EE061CE3A9BDFB74C8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FC0AB5E7F47036DC57A31D92 /* UITests */ = {
+			isa = PBXGroup;
+			children = (
+				B64982ECDC3224598F3DE363 /* AccessibilityTests.swift */,
+			);
+			path = UITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3FC78CAECAD683E10DEEBB21 /* AcceptanceApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB915897E551E14E509B2409 /* Build configuration list for PBXNativeTarget "AcceptanceApp" */;
+			buildPhases = (
+				FB0B805D15BDB70D5E39A338 /* Sources */,
+				0B9EDD235E303DB71DF1400F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AcceptanceApp;
+			packageProductDependencies = (
+			);
+			productName = AcceptanceApp;
+			productReference = D01B82A5754D20D87F61DF73 /* AcceptanceApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6F76988A64E3E4475283B7BB /* AppleHomeObserver */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C56DEB86123B72AD6CB303F0 /* Build configuration list for PBXNativeTarget "AppleHomeObserver" */;
+			buildPhases = (
+				D3931012C70F235539260E62 /* Sources */,
+				2278E47A063EDF3B6A162096 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AppleHomeObserver;
+			packageProductDependencies = (
+			);
+			productName = AppleHomeObserver;
+			productReference = A2CAF67D9298AEDCF595F3EB /* AppleHomeObserver.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A29E4270A4E6A1FD8C12914F /* NativeAcceptanceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 418CC17AE4F57A9A1767B993 /* Build configuration list for PBXNativeTarget "NativeAcceptanceTests" */;
+			buildPhases = (
+				F3A09A97B98BC2011489208F /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NativeAcceptanceTests;
+			packageProductDependencies = (
+			);
+			productName = NativeAcceptanceTests;
+			productReference = 8BABBEDDA4FFB9B778A939D5 /* NativeAcceptanceTests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		CB9563B99F13779EEF60ACA5 /* AccessibilityUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E2582714CD76552DA2488ADA /* Build configuration list for PBXNativeTarget "AccessibilityUITests" */;
+			buildPhases = (
+				8AD3DC02C3BEC8D7E4F3038D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EEA8236BD09DC24597BC44C0 /* PBXTargetDependency */,
+			);
+			name = AccessibilityUITests;
+			packageProductDependencies = (
+			);
+			productName = AccessibilityUITests;
+			productReference = 4DF39D52EFA6B9EBCD5E8D11 /* AccessibilityUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		669DCC31F612EB4D4F2BC4FD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					3FC78CAECAD683E10DEEBB21 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					6F76988A64E3E4475283B7BB = {
+						DevelopmentTeam = "$(CI_TEAM_ID)";
+						ProvisioningStyle = Automatic;
+					};
+					A29E4270A4E6A1FD8C12914F = {
+						ProvisioningStyle = Automatic;
+					};
+					CB9563B99F13779EEF60ACA5 = {
+						DevelopmentTeam = "$(CI_TEAM_ID)";
+						ProvisioningStyle = Automatic;
+						TestTargetID = 6F76988A64E3E4475283B7BB;
+					};
+				};
+			};
+			buildConfigurationList = A23E3BD09B79941215B2B9EE /* Build configuration list for PBXProject "AppleHomeObserver" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F6007EF9A2617A551FED58B2;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 942635EE061CE3A9BDFB74C8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6F76988A64E3E4475283B7BB /* AppleHomeObserver */,
+				3FC78CAECAD683E10DEEBB21 /* AcceptanceApp */,
+				CB9563B99F13779EEF60ACA5 /* AccessibilityUITests */,
+				A29E4270A4E6A1FD8C12914F /* NativeAcceptanceTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0B9EDD235E303DB71DF1400F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B116660D54D36A9393A66B3A /* AppleHomeObserver.icon in Resources */,
+				C5CEB1242B6336B4AFB60D3A /* Assets.xcassets in Resources */,
+				A4B1184FD425A8B8AD47BE5E /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2278E47A063EDF3B6A162096 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A2B8B6484221FA1E76789ADC /* AppleHomeObserver.icon in Resources */,
+				C1B39A9A2BA33265802E104D /* Assets.xcassets in Resources */,
+				4DB34932CB38FCE653C0E35E /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8AD3DC02C3BEC8D7E4F3038D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11BFE471AD4EF613B8E493BA /* AccessibilityTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3931012C70F235539260E62 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A2FCF92E471B2EA8F05D0138 /* AppleHomeObserverApp.swift in Sources */,
+				B1BF0B227EB0829D6608A652 /* Archive.swift in Sources */,
+				B3D754D583AEFCE56F4EAD95 /* BackupsView.swift in Sources */,
+				2266ABCBC182B907B43E7473 /* BlindInvestigationView.swift in Sources */,
+				97ACC2CF46D9960F7293011D /* CatalystWindowConfiguration.swift in Sources */,
+				DA0F83356F478E2259D2F1AC /* CoverageView.swift in Sources */,
+				160281AD3876E04C761A074C /* HomeAdapter.swift in Sources */,
+				D69AF0F490A964BCB999C7A1 /* InventoryGate.swift in Sources */,
+				06F5E5E42E50969FA524BCB1 /* Models.swift in Sources */,
+				6CAB6580BEE274E6C5907893 /* Monitoring.swift in Sources */,
+				A6A99BCC94B0AC15BAF17B43 /* MonitoringView.swift in Sources */,
+				00E99FD7713490304A4DC648 /* ObserverConfiguration.swift in Sources */,
+				4E52D6FA3A1E2EA1E73B7ADA /* ObserverStyle.swift in Sources */,
+				E6B85ED9AF87D657316F2A1B /* ObserverView.swift in Sources */,
+				4ED3EE07AAC9E3B412CE6B90 /* OverviewView.swift in Sources */,
+				F2F771F5E03D480B17E92857 /* PrivateDocument.swift in Sources */,
+				39667777FDD51CA5B71EBEAF /* RecoveryView.swift in Sources */,
+				1A634E92F1526327F3D1517C /* Restore.swift in Sources */,
+				6ECFE0F56C896F351D1BD9F6 /* RestoreExecutor.swift in Sources */,
+				81F7D5B6C82739692324A9D2 /* RestoreJournal.swift in Sources */,
+				845EC391ADFE4220ADBE90D6 /* Runtime.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F3A09A97B98BC2011489208F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E4FA14D07B99207134F45D1F /* NativeAcceptanceTests.swift in Sources */,
+				208256AE04DF10C3ACF52330 /* NativeHomeCaptionContrast.swift in Sources */,
+				4CD239687FDF42626E1BCBB5 /* NativeWindowTitleContrast.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FB0B805D15BDB70D5E39A338 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BEFC0DE68E7DD5FA200968E /* AppleHomeObserverApp.swift in Sources */,
+				8E8B5E4ACF9753A27022EBFB /* Archive.swift in Sources */,
+				3809C9565248AEE3E083659D /* BackupsView.swift in Sources */,
+				F148C6527B817197B7C2B92F /* BlindInvestigationView.swift in Sources */,
+				54742BF869A3CEA6FD30DD3D /* CatalystWindowConfiguration.swift in Sources */,
+				A63F5CE71A87376BFF0094A5 /* CoverageView.swift in Sources */,
+				899014CEA236B3E0C2B88B28 /* HomeAdapter.swift in Sources */,
+				7D1ABE6564546D892A100D7B /* InventoryGate.swift in Sources */,
+				2F2154C9B6AE2CB30542E433 /* Models.swift in Sources */,
+				E2E32A022E1333E99470BE05 /* Monitoring.swift in Sources */,
+				B7C2C4A4449F1FD3A1872A43 /* MonitoringView.swift in Sources */,
+				7AF968727B28AB471826F13F /* ObserverConfiguration.swift in Sources */,
+				4D437EF8B1F19FB0D3FC16B5 /* ObserverStyle.swift in Sources */,
+				7F70970B66C8420D623703B7 /* ObserverView.swift in Sources */,
+				5C6AE89A5B93F3C075138928 /* OverviewView.swift in Sources */,
+				F0C0C73896FC3B8621D493B8 /* PrivateDocument.swift in Sources */,
+				8BED52F93D9E44FB6953B07C /* RecoveryView.swift in Sources */,
+				4A5E91D476EB138ABE29D898 /* Restore.swift in Sources */,
+				805D5CE8A69E51C6C7C07312 /* RestoreExecutor.swift in Sources */,
+				3C721344040E7707828BE0BA /* RestoreJournal.swift in Sources */,
+				107370114550E5C97CA04F65 /* Runtime.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EEA8236BD09DC24597BC44C0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6F76988A64E3E4475283B7BB /* AppleHomeObserver */;
+			targetProxy = AB19D8ED478CC926967773BE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		5D9202BCE395D715A23CE836 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD130CFAB3699E6498608362 /* Defaults.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppleHomeObserver;
+				CODE_SIGN_ENTITLEMENTS = App/AppleHomeObserver.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "build/generated/AppleHomeObserver-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Apple Home Observer";
+				INFOPLIST_KEY_NSHomeKitUsageDescription = "Back up Home configuration and observe metadata and blind command outcomes. Restores require an explicit preview and Apply.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(OBSERVER_BUNDLE_ID)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = 2;
+				"TARGETED_DEVICE_FAMILY[sdk=macosx*]" = 6;
+			};
+			name = Release;
+		};
+		6841600739EC6168589BCF7D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		96A18C3B2C65CFDC8691A230 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.example.AppleHomeObserver.NativeTests;
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+			};
+			name = Debug;
+		};
+		A2E56D400E55CFF251C6FBE2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD130CFAB3699E6498608362 /* Defaults.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(OBSERVER_BUNDLE_ID).AccessibilityUITests";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AppleHomeObserver;
+			};
+			name = Release;
+		};
+		A434F0812451D0BD5D5791FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD130CFAB3699E6498608362 /* Defaults.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppleHomeObserver;
+				CODE_SIGN_ENTITLEMENTS = App/AppleHomeObserver.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "build/generated/AppleHomeObserver-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Apple Home Observer";
+				INFOPLIST_KEY_NSHomeKitUsageDescription = "Back up Home configuration and observe metadata and blind command outcomes. Restores require an explicit preview and Apply.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(OBSERVER_BUNDLE_ID)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				TARGETED_DEVICE_FAMILY = 2;
+				"TARGETED_DEVICE_FAMILY[sdk=macosx*]" = 6;
+			};
+			name = Debug;
+		};
+		A9273FB33A13CCC35E0D5B79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD130CFAB3699E6498608362 /* Defaults.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppleHomeObserver;
+				CODE_SIGN_ENTITLEMENTS = App/Acceptance.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "build/generated/AcceptanceApp-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Observer Acceptance";
+				INFOPLIST_KEY_NSHomeKitUsageDescription = "Back up Home configuration and observe metadata and blind command outcomes. Restores require an explicit preview and Apply.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.example.AppleHomeObserver.Acceptance;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) OBSERVER_ACCEPTANCE";
+				TARGETED_DEVICE_FAMILY = 2;
+				"TARGETED_DEVICE_FAMILY[sdk=macosx*]" = 6;
+			};
+			name = Debug;
+		};
+		ADADE6189251F4DA26A3985D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.example.AppleHomeObserver.NativeTests;
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+			};
+			name = Release;
+		};
+		B04CFB938659F1EB60151576 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD130CFAB3699E6498608362 /* Defaults.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppleHomeObserver;
+				CODE_SIGN_ENTITLEMENTS = App/Acceptance.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_APP_SANDBOX = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "build/generated/AcceptanceApp-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Observer Acceptance";
+				INFOPLIST_KEY_NSHomeKitUsageDescription = "Back up Home configuration and observe metadata and blind command outcomes. Restores require an explicit preview and Apply.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = org.example.AppleHomeObserver.Acceptance;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) OBSERVER_ACCEPTANCE";
+				TARGETED_DEVICE_FAMILY = 2;
+				"TARGETED_DEVICE_FAMILY[sdk=macosx*]" = 6;
+			};
+			name = Release;
+		};
+		D6D1501E456842D86FC4E5B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		D82B293CE06D569E84A8C7EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD130CFAB3699E6498608362 /* Defaults.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "$(OBSERVER_BUNDLE_ID).AccessibilityUITests";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = AppleHomeObserver;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		418CC17AE4F57A9A1767B993 /* Build configuration list for PBXNativeTarget "NativeAcceptanceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				96A18C3B2C65CFDC8691A230 /* Debug */,
+				ADADE6189251F4DA26A3985D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A23E3BD09B79941215B2B9EE /* Build configuration list for PBXProject "AppleHomeObserver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6841600739EC6168589BCF7D /* Debug */,
+				D6D1501E456842D86FC4E5B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AB915897E551E14E509B2409 /* Build configuration list for PBXNativeTarget "AcceptanceApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9273FB33A13CCC35E0D5B79 /* Debug */,
+				B04CFB938659F1EB60151576 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C56DEB86123B72AD6CB303F0 /* Build configuration list for PBXNativeTarget "AppleHomeObserver" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A434F0812451D0BD5D5791FD /* Debug */,
+				5D9202BCE395D715A23CE836 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E2582714CD76552DA2488ADA /* Build configuration list for PBXNativeTarget "AccessibilityUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D82B293CE06D569E84A8C7EE /* Debug */,
+				A2E56D400E55CFF251C6FBE2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 669DCC31F612EB4D4F2BC4FD /* Project object */;
+}

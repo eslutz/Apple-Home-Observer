@@ -16,7 +16,6 @@ __pycache__/
 
 Config/Local.xcconfig
 Config/deployment.env
-AppleHomeObserver.xcodeproj/
 *.provisionprofile
 *.mobileprovision
 *.p12
