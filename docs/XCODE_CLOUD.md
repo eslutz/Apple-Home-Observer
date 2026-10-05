@@ -39,3 +39,7 @@ The internal TestFlight group and its membership are managed in App Store Connec
 ## Validation
 
 Before enabling distribution, run the workflow once and verify the Xcode Cloud build succeeds, App Store Connect shows the processed build, and the internal group lists that exact build. Future TestFlight deployments must start from Xcode Cloud.
+
+## Versioning
+
+Use semantic versioning (`MAJOR.MINOR.PATCH`) for `MARKETING_VERSION` in `project.yml`, starting at `1.0.0`. Keep `CURRENT_PROJECT_VERSION` separate: Xcode Cloud assigns its incrementing build number during archives. TestFlight therefore displays versions such as `1.0.0 (3)`. Uploaded builds retain their original version; changing source cannot rename an existing TestFlight build.
