@@ -26,7 +26,7 @@ Preserve accessory identity and timestamps before unpairing or resetting. Compar
 
 ## Accessibility
 
-Isolated simulator audits use synthetic data, without HomeKit, Keychain, archive stores or desktop appearance changes. They cover shared SwiftUI controls; native Catalyst windows/toolbars and spoken VoiceOver behavior require separate acceptance. Known audit findings must be fixed or documented before release.
+Isolated simulator audits use synthetic data, without HomeKit, Keychain, archive stores or desktop appearance changes. They cover shared SwiftUI controls; native Catalyst windows/toolbars require separate acceptance. The owner waived actual VoiceOver testing on October 5, 2026. Known audit findings must be fixed or documented before release.
 
 ## Repeatable native acceptance
 
@@ -34,7 +34,7 @@ Install full Xcode and XcodeGen on the designated test Mac, complete Xcode's lic
 
 The suite checks native screen accessibility, menu shortcuts, an in-app appearance transition, resizing/search and guarded recovery states. The appearance transition is app-local; a real system appearance transition still needs separate acceptance on the designated Mac. Result bundles stay in ignored build storage. Do not publish household screenshots or attach a public self-hosted runner to a household Mac.
 
-For spoken VoiceOver acceptance, record the designated Mac's original VoiceOver, appearance and keyboard-navigation settings first. Review headings, navigation order, repeated snapshot action identification, disabled actions and dialog focus recovery using synthetic data. Restore those settings afterward. Automated audits and screenshots alone do not close this gate.
+If the owner later requests optional spoken VoiceOver testing, record the designated Mac's original VoiceOver, appearance and keyboard-navigation settings first. Review headings, navigation order, repeated snapshot action identification, disabled actions and dialog focus recovery using synthetic data. Restore those settings afterward. Automated audits and screenshots do not establish spoken VoiceOver quality; this test is currently waived.
 
 ## Audit evidence and bounded false positives
 
@@ -47,3 +47,11 @@ Successful installation atomically records its exact predecessor in the private 
 Hosted simulator setup uses `script/create-audit-simulator.py`: select the newest available iOS runtime with compatible iPad Pro hardware from `supportedDeviceTypes`, falling back to numeric version bounds on older tooling. Never select hardware by reversing the global device list. `--dry-run` reports the destination without creating a device. Hosted core and compatibility tests run independently of the UI matrix.
 
 Synthetic simulator fixtures explicitly select their Light/Dark color scheme as well as setting the simulator appearance. The hosted iOS 26.5 system-only appearance request produced light screenshots during dark-labeled runs; these screenshots did not establish dark coverage. App-local fixture appearance is separate from real system appearance acceptance on the designated Mac. Coverage identifiers use a labeled 44-point copy control rather than a small selectable-text target.
+
+## CI cost and optional simulator diagnostics
+
+Normal pushes and pull requests run privacy, verifier, core and ciphertext/deployment tests only. Documentation-only changes do not run CI. New commits cancel obsolete runs on the same branch. The core job has a ten-minute ceiling.
+
+Simulator accessibility audits are local-first. Use the existing `script/accessibility-audit.sh` with an isolated simulator; set `OBSERVER_AUDIT_TEST` to narrow the scope. Hosted audits require an explicit Actions → Verify → Run workflow choice: `none` (default, core only), `coverage` (focused coverage/disclosure checks), or `full` (expensive complete matrix, 25-minute ceiling). No audit findings or timeout errors are suppressed. Do not repeatedly rerun the full hosted matrix for an unchanged audit-engine timeout.
+
+Run 37278206493 failed both attempts with accessibilityAudit code -56 (audit did not complete in time). Its retry passed maximum-text screens, standard/max-text restore confirmation and coverage; the ordinary Dynamic Type matrix remained incomplete. Local standard/max-text audits passed. This is an unresolved hosted audit-engine/runtime compatibility problem, not proof of a product defect or a completed hosted audit. Prefer a focused local reproduction with the same Xcode/runtime before spending another full hosted run. Actions are pinned to Node 24 releases to remove the Node 20 and artifact punycode warnings. The legacy HomeKit timer timezone read remains necessary to flag timezone-bound timers as requiring manual recovery; App Intents metadata extraction is inapplicable to this app.
