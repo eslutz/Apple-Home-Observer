@@ -4,13 +4,6 @@ on:
     paths-ignore: ['docs/**', '**.md']
   pull_request:
     paths-ignore: ['docs/**', '**.md']
-  workflow_dispatch:
-    inputs:
-      accessibility:
-        description: 'Optional expensive simulator audit (local runs preferred)'
-        type: choice
-        default: none
-        options: [none, coverage, full]
 permissions:
   contents: read
 concurrency:
@@ -32,31 +25,3 @@ jobs:
         run: swift test
       - name: Ciphertext packaging tests
         run: python3 -m unittest discover -s Tests -p 'test_*.py'
-
-  accessibility:
-    if: github.event_name == 'workflow_dispatch' && inputs.accessibility != 'none'
-    runs-on: macos-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1, Node 24
-        with:
-          persist-credentials: false
-      - name: Install project generator
-        run: brew install xcodegen
-      - name: Create isolated iPad simulator
-        run: python3 script/create-audit-simulator.py
-      - name: Synthetic accessibility audit
-        env:
-          AUDIT_SCOPE: ${{ inputs.accessibility }}
-        run: |
-          if [[ "$AUDIT_SCOPE" == coverage ]]; then
-            export OBSERVER_AUDIT_TEST=testPopulatedCoverage
-          fi
-          ./script/accessibility-audit.sh
-      - name: Save synthetic test evidence
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1, Node 24
-        with:
-          name: synthetic-accessibility-results
-          path: build/accessibility-*.xcresult
-          retention-days: 7
