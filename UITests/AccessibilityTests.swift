@@ -10,7 +10,8 @@ final class AccessibilityTests: XCTestCase {
     private var contrastLabelFrames = [String: CGRect]()
     private func captureContrastBaseline(in app: XCUIApplication) {
         contrastAppFrame = app.frame
-        contrastSidebarFrame = app.descendants(matching: .any).matching(identifier: "observer.sidebar").firstMatch.frame
+        let sidebar = app.descendants(matching: .any).matching(identifier: "observer.sidebar").firstMatch
+        contrastSidebarFrame = sidebar.exists ? sidebar.frame : .zero
         contrastLabelFrames.removeAll()
         for (label, id) in sections {
             let row = app.descendants(matching: .any).matching(identifier: "observer.section." + id).firstMatch
@@ -101,6 +102,52 @@ final class AccessibilityTests: XCTestCase {
         XCTAssertTrue(row.isHittable, "Missing sidebar section: \(section)")
         row.tap()
     }
+    func testRestoreConfirmation() throws { try verifyRestoreConfirmation(largestText: false) }
+
+    func testLargestTextRestoreConfirmation() throws { try verifyRestoreConfirmation(largestText: true) }
+
+    private func verifyRestoreConfirmation(largestText: Bool) throws {
+        XCUIDevice.shared.orientation = .landscapeLeft
+        for appearance in ["light", "dark"] {
+            let app = XCUIApplication()
+            app.launchEnvironment["OBSERVER_UI_AUDIT"] = "recovery"
+            if largestText { app.launchEnvironment["OBSERVER_UI_TEXT_SIZE"] = "largest" }
+            app.launchEnvironment["OBSERVER_UI_APPEARANCE"] = appearance
+            app.launch()
+            XCTAssertTrue(app.staticTexts["Your Home, with a recovery history"].waitForExistence(timeout: 10))
+            select("recovery", in: app)
+            let review = app.buttons["Apply Reviewed Restore…"]
+            XCTAssertTrue(review.waitForExistence(timeout: 5))
+            review.tap()
+            let apply = app.buttons["Apply Restore"]
+            XCTAssertTrue(apply.waitForExistence(timeout: 5))
+            captureContrastBaseline(in: app)
+            try app.performAccessibilityAudit(for: .contrast) { issue in
+                if self.verifiedSidebarContrast(issue, in: app) { return true }
+                print("RECOVERY CONTRAST: \(issue.element?.label ?? "NO ELEMENT") | \(issue.detailedDescription)")
+                return false
+            }
+            // Standard-size runs exercise font-size mutation. Forced maximum
+            // text is fixed by the fixture, so test its rendered layout instead.
+            let semanticAudits: XCUIAccessibilityAuditType = largestText
+                ? [.elementDetection, .hitRegion, .sufficientElementDescription, .textClipped, .trait]
+                : .all.subtracting(.contrast)
+            try app.performAccessibilityAudit(for: semanticAudits) { issue in
+                print("RECOVERY CONFIRMATION AUDIT: \(issue.compactDescription) | \(issue.element?.label ?? "NO ELEMENT")")
+                return false
+            }
+            app.buttons["Cancel"].tap()
+            XCTAssertFalse(apply.exists)
+            XCTAssertFalse(app.staticTexts["Sample restore action verified; no Home changes applied"].exists)
+            XCTAssertTrue(review.waitForExistence(timeout: 5))
+            review.tap()
+            XCTAssertTrue(apply.waitForExistence(timeout: 5))
+            apply.tap()
+            XCTAssertTrue(app.staticTexts["Sample restore action verified; no Home changes applied"].waitForExistence(timeout: 5))
+            app.terminate()
+        }
+    }
+
     func testLargestTextScreens() throws {
         let originalAppearance = XCUIDevice.shared.appearance
         defer { XCUIDevice.shared.appearance = originalAppearance }
@@ -153,25 +200,39 @@ final class AccessibilityTests: XCTestCase {
         let originalAppearance = XCUIDevice.shared.appearance
         defer { XCUIDevice.shared.appearance = originalAppearance }
         XCUIDevice.shared.orientation = .landscapeLeft
-        let app = XCUIApplication()
-        app.launchEnvironment["OBSERVER_UI_AUDIT"] = "populated"
-        app.launchEnvironment["OBSERVER_UI_APPEARANCE"] = "light"
-        XCUIDevice.shared.appearance = .light
-        app.launch()
-        select("coverage", in: app)
-        let capture = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
-        capture.name = "populated-coverage-hit-target"; capture.lifetime = .keepAlways; add(capture)
-        captureContrastBaseline(in: app)
-        try app.performAccessibilityAudit(for: .contrast) { issue in
-            if self.verifiedSidebarContrast(issue, in: app) { return true }
-            print("AUDIT coverage-contrast: \(issue.compactDescription) | \(issue.element?.label ?? "no element") | \(issue.detailedDescription)")
-            return false
+        for largestText in [false, true] {
+            for appearance in ["light", "dark"] {
+                let app = XCUIApplication()
+                app.launchEnvironment["OBSERVER_UI_AUDIT"] = "populated"
+                app.launchEnvironment["OBSERVER_UI_APPEARANCE"] = appearance
+                if largestText { app.launchEnvironment["OBSERVER_UI_TEXT_SIZE"] = "largest" }
+                XCUIDevice.shared.appearance = appearance == "dark" ? .dark : .light
+                app.launch()
+                select("coverage", in: app)
+                let disclosure = app.buttons["Local storage and monitoring"]
+                let detail = app.scrollViews.firstMatch
+                for _ in 0..<6 where !disclosure.isHittable {
+                    detail.coordinate(withNormalizedOffset: CGVector(dx: 0.7, dy: 0.8))
+                        .press(forDuration: 0.1, thenDragTo: detail.coordinate(withNormalizedOffset: CGVector(dx: 0.7, dy: 0.3)))
+                }
+                XCTAssertTrue(disclosure.isHittable)
+                XCTAssertEqual(disclosure.value as? String, "Collapsed")
+                disclosure.tap()
+                XCTAssertEqual(disclosure.value as? String, "Expanded")
+                XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label == %@", "Encrypted archives, health data, and diagnostic events are stored locally. Central monitoring must be installed and verified separately.")).firstMatch.exists)
+                disclosure.tap()
+                XCTAssertEqual(disclosure.value as? String, "Collapsed")
+                captureContrastBaseline(in: app)
+                try app.performAccessibilityAudit(for: .contrast) { issue in
+                    self.verifiedSidebarContrast(issue, in: app)
+                }
+                let semantics: XCUIAccessibilityAuditType = largestText
+                    ? [.elementDetection, .hitRegion, .sufficientElementDescription, .textClipped, .trait]
+                    : .all.subtracting(.contrast)
+                try app.performAccessibilityAudit(for: semantics)
+                app.terminate()
+            }
         }
-        try app.performAccessibilityAudit(for: .all.subtracting(.contrast)) { issue in
-            print("AUDIT coverage: \(issue.compactDescription) | \(issue.element?.label ?? "no element") | \(issue.detailedDescription)")
-            return false
-        }
-        app.terminate()
     }
 
     func testFocusedDynamicType() throws {

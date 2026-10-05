@@ -5,6 +5,7 @@ struct CoverageView: View {
     @ObservedObject var runtime: Runtime
 
     @State private var search = ""
+    @State private var showsStorage = false
 
     private struct Entry: Identifiable {
         let index: Int
@@ -41,7 +42,7 @@ struct CoverageView: View {
     }
 
     var body: some View {
-        LazyVStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 24) {
             Text("Know what you can recover").font(.largeTitle.bold())
                 .accessibilityAddTraits(.isHeader)
             Text("Apple’s public HomeKit API does not expose every Home setting. Pairing credentials, access permissions, favorites, hub selection, and some automations require manual recovery.")
@@ -65,7 +66,7 @@ struct CoverageView: View {
                                         .font(.headline)
                                     Text(entry.category).font(.subheadline).foregroundStyle(ObserverStyle.secondaryText)
                                     Text(entry.gap.reason).fixedSize(horizontal: false, vertical: true)
-                                    Text("HomeKit ID").font(.caption).foregroundStyle(ObserverStyle.secondaryText)
+                                    Text("HomeKit ID").font(.callout).foregroundStyle(.primary)
                                     Button {
                                         UIPasteboard.general.string = entry.gap.objectID
                                     } label: {
@@ -86,10 +87,26 @@ struct CoverageView: View {
             } else {
                 ObserverEmptyState("Waiting for inventory", description: Text("Coverage notices appear after the selected Home is available."))
             }
-            DisclosureGroup("Local storage and monitoring") {
-                Text(runtime.root.path).font(.callout.monospaced()).textSelection(.enabled).padding(.top, 8)
-                Text("Encrypted archives, health data, and diagnostic events are stored locally. Central monitoring must be installed and verified separately.")
-                    .foregroundStyle(ObserverStyle.secondaryText).padding(.top, 8)
+            VStack(alignment: .leading, spacing: 8) {
+                Button {
+                    showsStorage.toggle()
+                } label: {
+                    HStack {
+                        Image(systemName: showsStorage ? "chevron.down" : "chevron.right")
+                            .accessibilityHidden(true)
+                        Text("Local storage and monitoring")
+                    }
+                    .frame(minHeight: 44, alignment: .leading)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Local storage and monitoring")
+                .accessibilityValue(showsStorage ? "Expanded" : "Collapsed")
+                .accessibilityHint(showsStorage ? "Hides storage details" : "Shows storage details")
+                if showsStorage {
+                    Text(runtime.root.path).font(.callout.monospaced()).textSelection(.enabled)
+                    Text("Encrypted archives, health data, and diagnostic events are stored locally. Central monitoring must be installed and verified separately.")
+                        .foregroundStyle(ObserverStyle.secondaryText)
+                }
             }
         }
     }

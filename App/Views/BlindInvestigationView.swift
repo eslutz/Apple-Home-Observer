@@ -50,13 +50,22 @@ struct BlindInvestigationView: View {
                 }
                 GroupBox("Reproduction marker") {
                     VStack(alignment: .leading, spacing: 20) {
-                        Picker("Blind", selection: $blindID) {
-                            Text("Choose a blind").tag("")
-                            ForEach(filteredBlinds) { blind in
-                                Text("\(blind.name) · \(roomName(for: blind))").tag(blind.id)
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("Blind").font(.callout).foregroundStyle(ObserverStyle.secondaryText)
+                            Picker("Blind", selection: $blindID) {
+                                Text("Choose a blind").tag("")
+                                ForEach(filteredBlinds) { blind in
+                                    Text("\(blind.name) · \(roomName(for: blind))").tag(blind.id)
+                                }
                             }
+                            .pickerStyle(.menu)
+                            .labelsHidden()
+                            .foregroundStyle(.primary)
+                            .accessibilityLabel("Blind")
+                            .accessibilityValue(blinds.first(where: { $0.id == blindID })?.name ?? "Choose a blind")
+                            .accessibilityIdentifier("observer.blind.selector")
+                            .disabled(filteredBlinds.isEmpty)
                         }
-                        .disabled(filteredBlinds.isEmpty)
                         GroupBox("Latest reported position") {
                             VStack(alignment: .leading, spacing: 10) {
                                 if let selectedReading {
@@ -83,8 +92,15 @@ struct BlindInvestigationView: View {
                             LabeledContent("Requested position", value: "\(Int(target))%")
                             Slider(value: $target, in: 0...100, step: 1) {
                                 Text("Requested position")
-                            } minimumValueLabel: { Text("0%") } maximumValueLabel: { Text("100%") }
+                            }
                             .accessibilityValue("\(Int(target)) percent")
+                            HStack {
+                                Text("0%")
+                                Spacer()
+                                Text("100%")
+                            }
+                            .font(.callout)
+                            .foregroundStyle(.primary)
                         }
                         HStack {
                             Text("Measured full travel time")

@@ -32,6 +32,9 @@ struct ObserverView: View {
     @ObservedObject private var adapter: HomeAdapter
     @SceneStorage("observer.section") private var section = ObserverSection.overview.rawValue
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
+    @State private var availableWidth: CGFloat = 980
+
+    private var compactNavigation: Bool { textSize.isAccessibilitySize || availableWidth < 900 }
     @State private var exportDocument: PrivateDocument?
     @State private var exporting = false
     @State private var exportName = "AppleHome.archive"
@@ -46,22 +49,22 @@ struct ObserverView: View {
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            List(selection: Binding<String?>(get: { section }, set: { if let value = $0 { section = value; if textSize.isAccessibilitySize { columnVisibility = .detailOnly } } })) {
+            List(selection: Binding<String?>(get: { section }, set: { value in
+                guard let value else { return }
+                section = value
+                if compactNavigation { columnVisibility = .detailOnly }
+            })) {
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
                         Text("Home").font(.caption).foregroundStyle(ObserverStyle.secondaryText)
-                        Menu {
-                            Button("Choose a Home") { runtime.selectedID = "" }
+                        Picker("Home", selection: $runtime.selectedID) {
+                            Text("Choose a Home").tag("")
                             ForEach(runtime.homeChoices) { home in
-                                Button(home.name) { runtime.selectedID = home.id }
-                            }
-                        } label: {
-                            HStack(alignment: .firstTextBaseline) {
-                                Text(runtime.homeChoices.first(where: { $0.id == runtime.selectedID })?.name ?? "Choose a Home")
-                                    .lineLimit(nil).fixedSize(horizontal: false, vertical: true)
-                                Image(systemName: "chevron.up.chevron.down").accessibilityHidden(true)
+                                Text(home.name).tag(home.id)
                             }
                         }
+                        .pickerStyle(.menu)
+                        .labelsHidden()
                         .disabled(runtime.busy)
                         .foregroundStyle(.primary)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -76,7 +79,9 @@ struct ObserverView: View {
                             Image(systemName: item.icon).accessibilityHidden(true)
                             Text(item.title).lineLimit(nil).fixedSize(horizontal: false, vertical: true)
                         }
+                            #if !targetEnvironment(macCatalyst)
                             .foregroundStyle(.primary)
+                            #endif
                             .accessibilityElement(children: .combine)
                             .accessibilityIdentifier("observer.section." + item.rawValue)
                             .tag(item.rawValue)
@@ -90,34 +95,38 @@ struct ObserverView: View {
             .navigationTitle("Observer")
             .navigationBarTitleDisplayMode(.inline)
         } detail: {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    switch ObserverSection(rawValue: section) ?? .overview {
-                    case .overview: OverviewView(runtime: runtime)
-                    case .backups:
-                        BackupsView(runtime: runtime, preview: {
-                            runtime.makePreview($0)
-                            section = ObserverSection.recovery.rawValue
-                        }, export: exportArchive, exportKey: exportKey)
-                    case .recovery:
-                        RecoveryView(runtime: runtime, importArchive: {
-                            importingRecovery = false; importing = true
-                        }, importKey: {
-                            importingRecovery = true; importing = true
-                        })
-                    case .blinds: BlindInvestigationView(runtime: runtime)
-                    case .coverage: CoverageView(runtime: runtime)
-                    case .monitoring: MonitoringView(runtime: runtime) { importingMonitoringFolder = true }
+            ScrollViewReader { scroll in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        switch ObserverSection(rawValue: section) ?? .overview {
+                        case .overview: OverviewView(runtime: runtime)
+                        case .backups:
+                            BackupsView(runtime: runtime, preview: {
+                                runtime.makePreview($0)
+                                section = ObserverSection.recovery.rawValue
+                            }, export: exportArchive, exportKey: exportKey)
+                        case .recovery:
+                            RecoveryView(runtime: runtime, importArchive: {
+                                importingRecovery = false; importing = true
+                            }, importKey: {
+                                importingRecovery = true; importing = true
+                            }, revealConfirmation: { scroll.scrollTo("observer.detail.top", anchor: .top) })
+                        case .blinds: BlindInvestigationView(runtime: runtime)
+                        case .coverage: CoverageView(runtime: runtime)
+                        case .monitoring: MonitoringView(runtime: runtime) { importingMonitoringFolder = true }
+                        }
                     }
+                    .id("observer.detail.top")
+                    .frame(maxWidth: 820, alignment: .leading)
+                    .padding(28)
+                    .frame(maxWidth: .infinity, alignment: .topLeading)
                 }
-                .frame(maxWidth: 820, alignment: .leading)
-                .padding(28)
-                .frame(maxWidth: .infinity, alignment: .topLeading)
+                .onChange(of: section) { _, _ in scroll.scrollTo("observer.detail.top", anchor: .top) }
             }
             .navigationTitle((ObserverSection(rawValue: section) ?? .overview).title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                if textSize.isAccessibilitySize || columnVisibility == .detailOnly {
+                if compactNavigation || columnVisibility == .detailOnly {
                     ToolbarItem(placement: .navigation) {
                         Button {
                             columnVisibility = columnVisibility == .detailOnly ? .all : .detailOnly
@@ -142,9 +151,19 @@ struct ObserverView: View {
                 }
             }
         }
-        .onChange(of: textSize) { _, size in
-            columnVisibility = size.isAccessibilitySize ? .detailOnly : .all
+        .onGeometryChange(for: CGFloat.self) { geometry in geometry.size.width } action: { width in
+            let wasCompact = availableWidth < 900
+            availableWidth = width
+            if wasCompact != (width < 900) {
+                columnVisibility = compactNavigation ? .detailOnly : .all
+            }
         }
+        .onChange(of: textSize) { _, size in
+            columnVisibility = size.isAccessibilitySize || availableWidth < 900 ? .detailOnly : .all
+        }
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("Apple Home Observer")
+        .accessibilityIdentifier("observer.window.content")
         .tint(ObserverStyle.linkTint)
         .frame(minWidth: 680, idealWidth: 980, minHeight: 520, idealHeight: 720)
         .fileExporter(isPresented: $exporting, document: exportDocument,

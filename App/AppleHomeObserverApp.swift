@@ -12,9 +12,31 @@ struct AppleHomeObserverApp: App {
         return ProcessInfo.processInfo.environment["OBSERVER_UI_APPEARANCE"] == "dark" ? .dark : .light
     }
 
+    @ViewBuilder
+    private var appContent: some View {
+        #if OBSERVER_ACCEPTANCE
+        if ProcessInfo.processInfo.environment["OBSERVER_UI_PLATFORM_CONTROL"] == "1" {
+            VStack(spacing: 24) {
+                Text("Native platform control").font(.title).accessibilityAddTraits(.isHeader)
+                Button("Platform control action") { acceptanceAppearance = .dark }
+            }
+            .padding(24)
+            .accessibilityElement(children: .contain)
+            .accessibilityLabel("Native platform control")
+        } else {
+            ObserverView(runtime: runtime)
+        }
+        #else
+        ObserverView(runtime: runtime)
+        #endif
+    }
+
     var body: some Scene {
         WindowGroup("Apple Home Observer") {
-            ObserverView(runtime: runtime)
+            appContent
+                #if targetEnvironment(macCatalyst)
+                .background(CatalystWindowConfiguration().allowsHitTesting(false).accessibilityHidden(true))
+                #endif
                 .preferredColorScheme(auditAppearance)
                 .transformEnvironment(\.dynamicTypeSize) { size in
                     if Runtime.auditMode != nil && ProcessInfo.processInfo.environment["OBSERVER_UI_TEXT_SIZE"] == "largest" {
@@ -26,6 +48,14 @@ struct AppleHomeObserverApp: App {
             #if OBSERVER_ACCEPTANCE
             CommandMenu("Acceptance") {
                 Button("Toggle Test Appearance") { acceptanceAppearance = auditAppearance == .dark ? .light : .dark }
+                #if targetEnvironment(macCatalyst)
+                ForEach([1200, 980, 680], id: \.self) { width in
+                    Button("Resize Test Window " + String(width)) {
+                        let height = width == 1200 ? 850 : (width == 980 ? 720 : 520)
+                        CatalystWindowConfiguration.requestAcceptanceSize(CGSize(width: width, height: height))
+                    }
+                }
+                #endif
             }
             #endif
             CommandMenu("Home") {
