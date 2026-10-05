@@ -56,7 +56,7 @@ struct ObserverView: View {
             })) {
                 Section {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Home").font(.caption).foregroundStyle(ObserverStyle.secondaryText)
+                        Text("Home").font(.body).foregroundStyle(.primary)
                         Picker("Home", selection: $runtime.selectedID) {
                             Text("Choose a Home").tag("")
                             ForEach(runtime.homeChoices) { home in
