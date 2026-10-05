@@ -3,6 +3,7 @@ import Security
 import CryptoKit
 import HomeKit
 import Darwin
+import OSLog
 
 struct KeyVault {
     static let service = ObserverConfiguration.bundleIdentifier + ".archive"
@@ -332,13 +333,40 @@ enum BlindCommandOutcome: Equatable {
         #else
         let bookmarkOptions: URL.BookmarkResolutionOptions = [.withoutUI]
         #endif
-        let folder = try URL(resolvingBookmarkData: bookmark, options: bookmarkOptions, relativeTo: nil, bookmarkDataIsStale: &stale)
+        let logger = Logger(subsystem: ObserverConfiguration.bundleIdentifier, category: "MonitoringExport")
+        let folder: URL
+        do {
+            folder = try URL(resolvingBookmarkData: bookmark, options: bookmarkOptions, relativeTo: nil, bookmarkDataIsStale: &stale)
+        } catch {
+            logger.error("Bookmark resolution failed, code \((error as NSError).code, privacy: .public)")
+            throw error
+        }
         let expected = Self.monitoringExportDirectory.standardizedFileURL.resolvingSymlinksInPath()
-        guard !stale, folder.standardizedFileURL.resolvingSymlinksInPath().path == expected.path else { throw ObserverError.unsafePath }
-        guard folder.startAccessingSecurityScopedResource() else { throw ObserverError.unsafePath }
+        guard folder.standardizedFileURL.resolvingSymlinksInPath().path == expected.path else {
+            logger.error("Bookmark rejected: dedicated folder mismatch")
+            throw ObserverError.unsafePath
+        }
+        guard folder.startAccessingSecurityScopedResource() else {
+            logger.error("Bookmark rejected: security-scoped access unavailable")
+            throw ObserverError.unsafePath
+        }
         defer { folder.stopAccessingSecurityScopedResource() }
         var info = stat()
-        guard lstat(folder.path, &info) == 0, info.st_uid == getuid(), (info.st_mode & S_IFMT) == S_IFDIR, info.st_mode & 0o077 == 0 else { throw ObserverError.unsafePath }
+        guard lstat(folder.path, &info) == 0, info.st_uid == getuid(), (info.st_mode & S_IFMT) == S_IFDIR, info.st_mode & 0o077 == 0 else {
+            logger.error("Export directory rejected: ownership, permissions or type")
+            throw ObserverError.unsafePath
+        }
+        if stale {
+            #if targetEnvironment(macCatalyst)
+            let creationOptions: URL.BookmarkCreationOptions = [.withSecurityScope]
+            #else
+            let creationOptions: URL.BookmarkCreationOptions = [.minimalBookmark]
+            #endif
+            // Renew only the already-authorized, validated dedicated folder.
+            let renewed = try folder.bookmarkData(options: creationOptions, includingResourceValuesForKeys: nil, relativeTo: nil)
+            UserDefaults.standard.set(renewed, forKey: Self.monitoringExportBookmarkKey)
+            logger.notice("Renewed stale monitoring folder bookmark")
+        }
         return try operation(folder)
     }
     private func seedMonitoringEvents(in directory: URL) throws {

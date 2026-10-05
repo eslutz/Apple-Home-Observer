@@ -13,6 +13,10 @@ settings:
 targets:
   AppleHomeObserver:
     type: application
+    info:
+      path: build/generated/AppleHomeObserver-Info.plist
+      properties:
+        ObserverMonitoringFolder: $(OBSERVER_MONITORING_FOLDER)
     configFiles:
       Debug: Config/Defaults.xcconfig
       Release: Config/Defaults.xcconfig
@@ -35,10 +39,13 @@ targets:
         SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD: NO
         INFOPLIST_KEY_CFBundleDisplayName: 'Apple Home Observer'
         ENABLE_APP_SANDBOX: YES
-        INFOPLIST_KEY_ObserverMonitoringFolder: $(OBSERVER_MONITORING_FOLDER)
 
   AcceptanceApp:
     type: application
+    info:
+      path: build/generated/AcceptanceApp-Info.plist
+      properties:
+        ObserverMonitoringFolder: $(OBSERVER_MONITORING_FOLDER)
     configFiles:
       Debug: Config/Defaults.xcconfig
       Release: Config/Defaults.xcconfig
@@ -66,7 +73,6 @@ targets:
         CODE_SIGN_STYLE: Automatic
         PROVISIONING_PROFILE_SPECIFIER: ''
         SWIFT_ACTIVE_COMPILATION_CONDITIONS: $(inherited) OBSERVER_ACCEPTANCE
-        INFOPLIST_KEY_ObserverMonitoringFolder: $(OBSERVER_MONITORING_FOLDER)
 
   AccessibilityUITests:
     type: bundle.ui-testing
