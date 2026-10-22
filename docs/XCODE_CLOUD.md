@@ -43,3 +43,23 @@ Before enabling distribution, run the workflow once and verify the Xcode Cloud b
 ## Versioning
 
 Use semantic versioning (`MAJOR.MINOR.PATCH`) for `MARKETING_VERSION` in `project.yml`, starting at `1.0.0`. Keep `CURRENT_PROJECT_VERSION` separate: Xcode Cloud assigns its incrementing build number during archives. TestFlight therefore displays versions such as `1.0.0 (3)`. Uploaded builds retain their original version; changing source cannot rename an existing TestFlight build.
+
+## Manual validation and release split (2026-10-22)
+
+- **Apple Home Observer Validation**: manual main only, cached (Clean off),
+  Build macOS / AppleHomeObserver / Any Mac (Mac Catalyst), no archive or
+  distribution post-action.
+- **Apple Home Observer Internal TestFlight**: manual main only, Clean on,
+  existing Catalyst Release archive and existing Apple Home Observer Internal
+  group. Existing signing and membership remain unchanged.
+- Both workflows run the complete ObserverCore `swift test` suite and Python
+  `Tests/test_*.py` regressions in `ci_post_clone.sh`; failure stops the build.
+  The app scheme itself has no unit-test target, so an empty Xcode Test action
+  must not be presented as test coverage. HomeKit-dependent UI acceptance remains
+  separate and is not silently run against the owner's live Home.
+- Keep the current stable Xcode/macOS release selection for this app; unrelated
+  Gus beta SDK/platform requirements do not apply.
+- Rollback: restore the original workflow name, manual Any Branches, Clean off
+  and single archive/internal-distribution configuration; remove only the new
+  Validation workflow. Revert the source commit to remove the pre-build gate or
+  availability export. Do not change signing, testers, or backup inventory gates.

@@ -20,6 +20,7 @@ struct KeyVault {
 struct Health: Codable {
     var schema = "apple-home-health/v1"; var timestamp = Date(); var authorized = false; var inventoryReady = false
     var homeCount = 0; var selectedHomeAvailable = false; var accessoryCount = 0; var accessoriesWithoutRoom = 0; var accessoriesWithoutServiceData = 0
+    var inventoryHoldReason: String?; var missingInventoryIdentities = 0
     var lastBackup: Date?; var lastDaily: Date?; var lastReconcile: Date?; var driftTotal = 0; var unplannedDriftTotal = 0; var movementFailuresTotal = 0; var unavailable = 0; var coverageGaps = 0; var loggingHealthy = true; var error: String?
 }
 struct BlindPositionReading: Equatable {
@@ -95,6 +96,7 @@ enum BlindCommandOutcome: Equatable {
     private var previousTargets: [String:Double] = [:]
     private var watchdog = MovementWatchdog(travelSeconds:60)
     private var tickCount = 0
+    private var lastAvailabilityPublication: Date?
     var plannedUntil: Date?
     private var travelBudgets: [String:Double] = [:]
     var savedForRestore: HomeSnapshot?
@@ -180,6 +182,7 @@ enum BlindCommandOutcome: Equatable {
         health.selectedHomeAvailable = adapter.home != nil
         let capturedAccessories = adapter.home?.accessories ?? []
         health.accessoryCount = capturedAccessories.count
+        health.unavailable = capturedAccessories.filter { !$0.isReachable }.count
         health.accessoriesWithoutRoom = capturedAccessories.filter { $0.room == nil }.count
         health.accessoriesWithoutServiceData = capturedAccessories.filter { !$0.services.contains { !$0.characteristics.isEmpty } }.count
         do {
@@ -190,6 +193,11 @@ enum BlindCommandOutcome: Equatable {
             let predecessor = known?.homeID == snapshot.homeID ? known : nil
             let decision = inventoryGate.evaluate(snapshot,previous:predecessor,approveRemoval:approveRemoval)
             guard decision == .ready else {
+                health.inventoryHoldReason = decision == .removalNeedsReview ? "known_identity_missing" : "awaiting_stable_inventory"
+                if let predecessor {
+                    func ids(_ s: HomeSnapshot) -> Set<String> { Set(s.accessories.map(\.id) + s.accessories.flatMap(\.services).map(\.id) + s.accessories.flatMap(\.services).flatMap(\.characteristics).map(\.id) + s.rooms.map(\.id) + s.zones.map(\.id) + s.groups.map(\.id) + s.scenes.map(\.id) + s.automations.map(\.id)) }
+                    health.missingInventoryIdentities = ids(predecessor).subtracting(ids(snapshot)).count
+                }
                 health.inventoryReady = false; pendingInventory = snapshot
                 if decision == .removalNeedsReview {
                     status = "Inventory lost known identities. Review missing objects before accepting a replacement backup."
@@ -198,6 +206,7 @@ enum BlindCommandOutcome: Equatable {
                 writeHealth(); return
             }
             pendingInventory = nil
+            health.inventoryHoldReason = nil; health.missingInventoryIdentities = 0
             inventory = snapshot; health.inventoryReady = true; health.lastReconcile = Date(); health.coverageGaps = snapshot.coverage.count
             health.unavailable = adapter.home?.accessories.filter { !$0.isReachable }.count ?? 0
             if let predecessor {
@@ -227,6 +236,7 @@ enum BlindCommandOutcome: Equatable {
             else if health.accessoriesWithoutServiceData > 0 { health.error = "accessory_service_data_incomplete"; status = "HomeKit accessory service data is incomplete; inventory is held" }
             else { health.error = "home_snapshot_invalid"; status = "HomeKit returned an incomplete inventory. Existing snapshots remain protected." }
             if let failure = adapter.lastCaptureFailure { health.error = failure }
+            health.inventoryHoldReason = health.error; health.missingInventoryIdentities = 0
         }
         writeHealth()
     }
@@ -418,6 +428,26 @@ enum BlindCommandOutcome: Equatable {
     func writeHealth() {
         guard Self.auditMode == nil else { return }
         health.timestamp = Date()
+        if health.timestamp.timeIntervalSince(lastAvailabilityPublication ?? .distantPast) >= 30 {
+            // Availability observations are independent of backup-removal approval.
+            // Never interpret missing permission/Home/inventory as device recovery.
+            let observed = adapter.home?.accessories ?? []
+            let valid = adapter.authorized && adapter.home != nil && !observed.isEmpty && observed.count <= 512
+            let rows: [[String:Any]] = valid ? observed.sorted { $0.uniqueIdentifier.uuidString < $1.uniqueIdentifier.uuidString }.map {
+                ["id": $0.uniqueIdentifier.uuidString, "reachable": $0.isReachable,
+                 "manufacturer": String(($0.manufacturer ?? "unknown").prefix(80)),
+                 "model": String(($0.model ?? "unknown").prefix(80)),
+                 "roomID": $0.room?.uniqueIdentifier.uuidString ?? "unassigned"]
+            } : []
+            let availability: [String:Any] = ["schema":"apple-home-availability/v1", "timestamp":health.timestamp.timeIntervalSince1970,
+                "authorized":adapter.authorized, "selectedHomeAvailable":adapter.home != nil,
+                "sampleValid":valid, "inventoryReady":health.inventoryReady, "accessories":rows]
+            if let data = try? JSONSerialization.data(withJSONObject:availability, options:[.sortedKeys]), data.count <= 262144 {
+                try? PrivateFiles.write(data, to:root.appendingPathComponent("availability.json"))
+                if monitoringExportConfigured { try? withMonitoringExport { try PrivateFiles.write(data, to:$0.appendingPathComponent("availability.json")) } }
+            }
+            lastAvailabilityPublication = health.timestamp
+        }
         UserDefaults.standard.set(health.driftTotal, forKey: "driftTotal")
         UserDefaults.standard.set(health.unplannedDriftTotal, forKey: "unplannedDriftTotal")
         UserDefaults.standard.set(health.movementFailuresTotal, forKey: "movementFailuresTotal")

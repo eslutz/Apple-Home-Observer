@@ -9,3 +9,7 @@ if ! command -v xcodegen >/dev/null 2>&1; then
 fi
 
 xcodegen generate
+
+# Both manual workflows must pass the complete portable regression suites.
+swift test
+python3 -m unittest discover -s Tests -p "test_*.py"
